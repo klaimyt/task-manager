@@ -1,7 +1,7 @@
-const mangoose = require('mongoose')
+const mongoose = require('mongoose')
 const STATE = require('../State')
 
-const TaskSchema = new mangoose.Schema({
+const TaskSchema = new mongoose.Schema({
     text: {
         type: String,
         required: true

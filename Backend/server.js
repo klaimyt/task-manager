@@ -15,6 +15,7 @@ let users = require('./models/DB/User')
 server.use(express.json())
 server.use('/', require('./routes/index.js'))
 server.use('/api/auth', require('./routes/auth'))
+server.use('/api/dashboard', require('./routes/dashboard'))
 
 const PORT = process.env.PORT || 5000
 
