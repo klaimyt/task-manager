@@ -11,9 +11,12 @@ const TaskSchema = new mangoose.Schema({
         default: STATE.TODO,
         required: true
     },
-    date: {
+    creatingDate: {
         type: Date,
         default: Date.now
+    },
+    updatedDate: {
+        type: Date
     }
 })
 
