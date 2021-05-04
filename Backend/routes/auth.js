@@ -31,14 +31,17 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/signin', async (req, res) => {
+    const {error} = loginValidation(req.body)
+    if (error) return res.status(400).json({ error: error.details[0].message })
     const user = await User.findOne({email: req.body.email})
+    if (!user) return res.status(400).json({ error: "Wrong email or password" })
     try {
         const result = await bcrypt.compare(req.body.password, user.password)
-        if (!result) return res.status(401)
+        if (!result) return res.status(400).json({ error: "Wrong email or password"})
         const token = jwt.sign({_id: user.id}, process.env.JWT_SECRET)
         res.send(token)
     } catch (err) {
-        res.send(err)
+        res.status(500).json({error:err})
     }
 })
 
