@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const ROLE = require('./Role')
+const ROLE = require('../Role')
 
 const UserSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,

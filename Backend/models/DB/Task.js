@@ -1,5 +1,5 @@
 const mangoose = require('mongoose')
-const STATE = require('./State')
+const STATE = require('../State')
 
 const TaskSchema = new mangoose.Schema({
     text: {

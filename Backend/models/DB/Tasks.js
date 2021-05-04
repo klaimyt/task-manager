@@ -1,4 +1,4 @@
-const Task = require('./Task')
+const Task = require('../Task')
 // I don't know how to name it
 const Tasks = Object.freeze({
     employerId: String,
