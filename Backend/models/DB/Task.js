@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const STATE = require('../State')
 
+// Change to JS type and put it ti UserData (Maybe)
 const TaskSchema = new mongoose.Schema({
     text: {
         type: String,
