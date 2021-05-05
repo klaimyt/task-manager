@@ -18,17 +18,13 @@ router.get('/tasks', verifyToken, async (req, res) => {
     // Query for userData
     const userData = await UserData.findOne({employeeId: req.user._id})
     if (!userData) return res.send("There is no user data")
-    //Query for array of tasks
-    // const tasks = userData.tasks.map(async taskId => {
-    //     await Task.find({_id: taskId})
-    // })
-    // res.send(tasks)
-    var a = []
-    for (const taskId of userData.tasks) {
-        const task = await Task.findOne({_id: taskId})
-        a.push(task)
-    }
-    res.send(a)
+    const tasksIds = userData.tasks.map(task => { return task._id })
+    try {
+        const test = await Task.find({
+            '_id': { $in: tasksIds}
+        });
+        res.send(test)
+    } catch (err) { return res.status(500) }
 })
 
 
