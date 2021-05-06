@@ -13,7 +13,7 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopo
 server.use(express.json())
 server.use('/', require('./routes/index.js'))
 server.use('/api/auth', require('./routes/auth'))
-server.use('/api/dashboard', require('./routes/dashboard'))
+server.use('/api/employee', require('./routes/employee'))
 
 const PORT = process.env.PORT || 5000
 

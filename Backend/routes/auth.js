@@ -1,45 +1,24 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const User = require('../models/DB/User')
 const jwt = require('jsonwebtoken')
-const { registerValidation, loginValidation } = require('../validation')
-
-router.post('/signup', async (req, res) => {
-    const {error} = registerValidation(req.body)
-    if (error) return res.status(400).json({error: error.details[0].message})
-    // If email exists
-    if (await User.findOne({email: req.body.email})) return res.status(400).json({error: "Email already exsists"})
-
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
-        if (err) return res.status(500).json({error: err})
-
-        const newUser = new User({
-            _id: new mongoose.Types.ObjectId(),
-            name: req.body.name,
-            email: req.body.email,
-            password: hash
-        })
-        newUser.save()
-            .then(result => {
-                const token = jwt.sign({_id: result.id, role: user.role}, process.env.JWT_SECRET)
-                res.header('auth-token', token).status(201).send("Done")
-            })
-            .catch(error => res.status(500).json({error: error}))
-    })
-})
+const {loginValidation} = require('../validation')
 
 router.post('/signin', async (req, res) => {
+    // Input validation
     const {error} = loginValidation(req.body)
     if (error) return res.status(400).json({ error: error.details[0].message })
+    // Search user in DB
     const user = await User.findOne({email: req.body.email})
     if (!user) return res.status(400).json({ error: "Wrong email or password" })
     try {
+        // Check for password
         const result = await bcrypt.compare(req.body.password, user.password)
         if (!result) return res.status(400).json({ error: "Wrong email or password"})
+        // JWT Token
         const token = jwt.sign({_id: user.id, role: user.role}, process.env.JWT_SECRET)
-        res.send(token)
+        res.status(200).send()
     } catch (err) {
         res.status(500).json({error:err})
     }
