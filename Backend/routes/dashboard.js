@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const verifyToken = require('./verifyToken')
+const verifyToken = require('../premissions/verifyToken')
 const userData = require('../models/DB/UserData')
 
 const router = express.Router()
