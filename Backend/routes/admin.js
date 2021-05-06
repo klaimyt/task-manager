@@ -1,5 +1,9 @@
 const express = require('express')
+const bcrypt = require('bcrypt')
+const mongoose = require('mongoose')
 const User = require('../models/DB/User')
+const { registerValidation } = require('../premissions/validation')
+
 
 const router = express.Router()
 

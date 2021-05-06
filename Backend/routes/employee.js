@@ -15,10 +15,9 @@ router.get('/:userId', verifyToken, canViewPage, async (req,res) => {
     }
 })
 
-
-
-router.patch('/:userId/:taskId', (req, res) => {
-
+router.patch('/:userId/:taskId', verifyToken, canViewPage, (req, res) => {
+    const userData = res.locals.userData
+    const task = Task.findById(req.params.taskId)
 })
 
 module.exports = router
