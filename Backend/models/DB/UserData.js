@@ -2,12 +2,10 @@ const mongoose = require('mongoose')
 
 const userDataSchema = mongoose.Schema({
     employerId: {
-        type: String,
-        required: true
+        type: String
     },
     employeeId: {
-        type: String,
-        required: true
+        type: String
     },
     tasks: [{
         type: mongoose.Schema.ObjectId,
@@ -15,6 +13,6 @@ const userDataSchema = mongoose.Schema({
     }]
 })
 
-const UserData = mongoose.model('UserDataSchema', userDataSchema)
+const UserData = mongoose.model('UserData', userDataSchema)
 
 module.exports = UserData

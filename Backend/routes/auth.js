@@ -23,7 +23,7 @@ router.post('/signup', async (req, res) => {
         })
         newUser.save()
             .then(result => {
-                const token = jwt.sign({_id: result.id}, process.env.JWT_SECRET)
+                const token = jwt.sign({_id: result.id, role: user.role}, process.env.JWT_SECRET)
                 res.header('auth-token', token).status(201).send("Done")
             })
             .catch(error => res.status(500).json({error: error}))
@@ -38,7 +38,7 @@ router.post('/signin', async (req, res) => {
     try {
         const result = await bcrypt.compare(req.body.password, user.password)
         if (!result) return res.status(400).json({ error: "Wrong email or password"})
-        const token = jwt.sign({_id: user.id}, process.env.JWT_SECRET)
+        const token = jwt.sign({_id: user.id, role: user.role}, process.env.JWT_SECRET)
         res.send(token)
     } catch (err) {
         res.status(500).json({error:err})
