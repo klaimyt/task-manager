@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const User = require('../models/DB/User')
 const { registerValidation } = require('../premissions/validation')
+const ROLE = require('../models/Role')
 
 
 const router = express.Router()
@@ -20,7 +21,8 @@ router.post('/createUser', async (req, res) => {
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
             email: req.body.email,
-            password: hash
+            password: hash,
+            role: req.body.role
         })
 
         newUser.save()

@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const ROLE = require('../models/Role')
 
 const registerValidation = (user) => {
     const schema = Joi.object({
@@ -9,6 +10,9 @@ const registerValidation = (user) => {
             .required(),
         password: Joi.string()
             .min(8)
+            .required(),
+        role: Joi.string()
+            .valid(ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.EMPLOYER)
             .required()
     })
     return schema.validate(user)
