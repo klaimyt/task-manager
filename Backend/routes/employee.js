@@ -1,7 +1,7 @@
 const express = require('express')
 const Task = require('../models/DB/Task')
 const verifyToken = require('../premissions/verifyToken')
-const canViewPage = require('../premissions/authorization')
+const { canViewPage } = require('../premissions/authorization')
 const STATE = require('../models/State')
 const ROLE = require('../models/Role')
 

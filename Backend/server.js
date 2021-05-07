@@ -15,6 +15,7 @@ server.use('/', require('./routes/index.js'))
 server.use('/api/auth', require('./routes/auth'))
 server.use('/api/employee', require('./routes/employee'))
 server.use('/api/admin', require('./routes/admin'))
+server.use('/api/employer', require('./routes/employer'))
 
 const PORT = process.env.PORT || 5000
 
