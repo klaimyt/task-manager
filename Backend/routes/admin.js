@@ -11,6 +11,12 @@ const UserData = require('../models/DB/UserData')
 
 const router = express.Router()
 
+router.get('/', verifyToken, isAdmin, async (req, res) => {
+    const query = await User.find({}).select('-password -__v')
+    // query.select('-password')
+    res.status(200).json(query)
+})
+
 router.post('/createUser', verifyToken, isAdmin, async (req, res) => {
     const {error} = registerValidation(req.body)
     if (error) return res.status(400).json({error: error.details[0].message})
@@ -55,7 +61,10 @@ router.post('/createRelationship', verifyToken, isAdmin, async (req, res) => {
     }).catch(err => {
         res.status(500).json(err)
     })
-    
+})
+
+router.patch('/:userId/changePassword', verifyToken, isAdmin, (req, res) => {
+
 })
 
 module.exports = router
