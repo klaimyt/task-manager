@@ -11,7 +11,6 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopo
     .catch((err) => console.log(err))
 
 server.use(express.json())
-server.use('/', require('./routes/index.js'))
 server.use('/api/auth', require('./routes/auth'))
 server.use('/api/employee', require('./routes/employee'))
 server.use('/api/admin', require('./routes/admin'))

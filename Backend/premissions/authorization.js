@@ -6,8 +6,8 @@ async function canViewPage(req, res, next) {
 
     if (!res.locals.userData) return res.status(404).send("User not found")
 
-    if (res.locals.userData.employeeId === req.params.userId ||
-        res.locals.userData.employerId === req.params.userId ||
+    if (res.locals.userData.employeeId === req.user._id ||
+        res.locals.userData.employerId === req.user._id ||
         req.user.role === ROLE.ADMIN) {
             next()
     } else {
