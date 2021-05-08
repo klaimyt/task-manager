@@ -7,10 +7,18 @@ async function canViewPage(req, res, next) {
 
     if (!res.locals.userData) return res.status(404).send("User not found")
 
-    if (res.locals.userData.employeeId === req.user._id ||
-        res.locals.userData.employerId === req.user._id ||
-        req.user.role === ROLE.ADMIN) {
-            next()
+    // There might be several employers for one employee. I guess it's kludge and i'll change it later
+    var found = false
+    res.locals.userData.forEach(userData => {
+        if (userData.employeeId === req.user._id ||
+            userData.employerId === req.user._id ||
+            req.user.role === ROLE.ADMIN) {
+                found = true
+        }
+    });
+
+    if (found) {
+        next()
     } else {
         return res.status(401).send("Access denied")
     }

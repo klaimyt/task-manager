@@ -7,7 +7,8 @@ const ROLE = require('../models/Role')
 
 const router = express.Router()
 
-router.get('/:userId', verifyToken, canViewPage, async (req,res) => {
+// Get all employee's tasks
+router.get('/:userId', verifyToken, canViewPage, async (req, res) => {
     const userData = res.locals.userData
     try {
         const tasks = await Task.find({'_id': { $in: userData.tasks }})
