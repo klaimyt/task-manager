@@ -29,5 +29,15 @@ const loginValidation = (user) => {
     })
     return schema.validate(user)
 }
+
+const passwordValidation = password => {
+    const schema = Joi.object({
+        password: Joi.string()
+            .min(8)
+            .required()
+    })
+    return schema.validate(password)
+}
 module.exports.registerValidation = registerValidation
 module.exports.loginValidation = loginValidation
+module.exports.passwordValidation = passwordValidation
