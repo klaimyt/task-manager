@@ -18,25 +18,13 @@ async function canViewPage(req, res, next) {
     }
 }
 
-router.get('/:userId', verifyToken, canViewPage, (req, res) => {
-
-})
-
-router.get('/', verifyToken, isAdmin, async (req, res) => {
-    var user
-    try {
-        users = await UserData.find({})
-        if (user === undefined) return res.status(404).json({ error: "There is no users"})
-    } catch (err) {
-        res.status(404).json({ error: err })
-    }
-    
-
-    // res.json(user)
-})
-
-router.post('/:employeeId', verifyToken, async (req, res) => {
-
+// Get all availabel users
+router.get('/', verifyToken, (req, res) => {
+    UserData.find({employerId: req.user._id}, (err, employees) => {
+        if (err) return res.status(500).json(err)
+        console.log(req.user._id)
+        res.json(employees)
+    })
 })
 
 module.exports = router

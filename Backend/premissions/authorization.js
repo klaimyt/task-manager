@@ -1,6 +1,7 @@
 const ROLE = require('../models/Role')
 const UserData = require('../models/DB/UserData')
 
+// It should be refactored
 async function canViewPage(req, res, next) {
     res.locals.userData = await UserData.find({employeeId: req.params.userId})
 
