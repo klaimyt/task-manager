@@ -83,4 +83,16 @@ router.patch('/:userId/changePassword', verifyToken, isAdmin, (req, res) => {
     })
 })
 
+router.delete('/:userId', verifyToken, isAdmin, (req, res) => {
+    // Find user
+    // const a = User.findByIdAndDelete(req.params.userId).exec().then(res.status(200).send()).catch(err => res.status(500).json(err))
+    // if (!a) return res.status(404).send("not found")
+    // console.log(a)
+    User.findByIdAndDelete(req.params.userId, (err, result) => {
+        if (err) return res.status(500).json(err)
+        if (!result) return res.status(404).send()
+        res.status(200).json(result)
+    })
+})
+
 module.exports = router
