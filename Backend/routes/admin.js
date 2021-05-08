@@ -11,11 +11,13 @@ const UserData = require('../models/DB/UserData')
 
 const router = express.Router()
 
+//Get all users
 router.get('/', verifyToken, isAdmin, async (req, res) => {
     const query = await User.find({}).select('-password -__v')
     res.status(200).json(query)
 })
 
+// Create new user
 router.post('/createUser', verifyToken, isAdmin, async (req, res) => {
     const {error} = registerValidation(req.body)
     if (error) return res.status(400).json({error: error.details[0].message})
@@ -41,27 +43,7 @@ router.post('/createUser', verifyToken, isAdmin, async (req, res) => {
     })
 })
 
-router.post('/createRelationship', verifyToken, isAdmin, async (req, res) => {
-    // Check if exsists
-    var userData
-    try {
-        userData = await UserData.findOne({employeeId: req.body.employeeId, employerId: req.body.employerId})
-        if (userData) return res.status(409).send()
-    } catch (err) {
-        res.status(500).send()
-    }
-    const newRelationship = new UserData({
-        employeeId: req.body.employeeId,
-        employerId: req.body.employerId
-    })
-
-    newRelationship.save().then(result => {
-        res.status(201).json(result)
-    }).catch(err => {
-        res.status(500).json(err)
-    })
-})
-
+// Change user password
 router.patch('/:userId/changePassword', verifyToken, isAdmin, (req, res) => {
     //Validate password
     const {error} = passwordValidation(req.body)
@@ -83,15 +65,49 @@ router.patch('/:userId/changePassword', verifyToken, isAdmin, (req, res) => {
     })
 })
 
+// Delete user
 router.delete('/:userId', verifyToken, isAdmin, (req, res) => {
-    // Find user
-    // const a = User.findByIdAndDelete(req.params.userId).exec().then(res.status(200).send()).catch(err => res.status(500).json(err))
-    // if (!a) return res.status(404).send("not found")
-    // console.log(a)
     User.findByIdAndDelete(req.params.userId, (err, result) => {
+        if (err) return res.status(404).json(err)
+        res.json(result)
+    })
+})
+
+// Get all relationships
+router.get('/relationship', verifyToken, isAdmin, (req, res) => {
+    UserData.find((err, relationships) => {
         if (err) return res.status(500).json(err)
-        if (!result) return res.status(404).send()
-        res.status(200).json(result)
+        res.json(relationships)
+    }).select('-__v')
+})
+
+// Create new relationship
+router.post('/relationship', verifyToken, isAdmin, async (req, res) => {
+    // Check if exsists
+    var userData
+    try {
+        userData = await UserData.findOne({employeeId: req.body.employeeId, employerId: req.body.employerId})
+        if (userData) return res.status(409).send()
+    } catch (err) {
+        res.status(500).send()
+    }
+    const newRelationship = new UserData({
+        employeeId: req.body.employeeId,
+        employerId: req.body.employerId
+    })
+
+    newRelationship.save().then(result => {
+        res.status(201).json(result)
+    }).catch(err => {
+        res.status(500).json(err)
+    })
+})
+
+// Delete relationship
+router.delete('/relationship/:id', (req, res) => {
+    UserData.findByIdAndDelete(req.params.id, (err, result) => {
+        if (err) return res.status(404).json(err)
+        res.send()
     })
 })
 
