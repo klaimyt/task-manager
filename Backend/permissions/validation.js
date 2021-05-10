@@ -5,8 +5,8 @@ const registerValidation = (user) => {
     const schema = Joi.object({
         name: Joi.string()
             .required(),
-        email: Joi.string()
-            .email()
+        username: Joi.string()
+            .min(6)
             .required(),
         password: Joi.string()
             .min(8)
@@ -20,9 +20,9 @@ const registerValidation = (user) => {
 
 const loginValidation = (user) => {
     const schema = Joi.object({
-        email: Joi.string()
+        username: Joi.string()
             .required()
-            .email(),
+            .min(6),
         password: Joi.string()
             .min(8)
             .required()

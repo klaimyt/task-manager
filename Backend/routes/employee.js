@@ -1,28 +1,50 @@
+// Frameworks
 const express = require('express')
-const Task = require('../models/DB/Task')
-const verifyToken = require('../premissions/verifyToken')
-const { canViewPage } = require('../premissions/authorization')
+// Permissions
+const verifyToken = require('../permissions/verifyToken')
+const { canViewPage, canPatchTask } = require('../permissions/authorization')
+// Data model
 const STATE = require('../models/State')
 const ROLE = require('../models/Role')
+const UserData = require('../models/DB/UserData')
+const Task = require('../models/DB/Task')
 
 const router = express.Router()
 
 // Get all employee's tasks
 router.get('/:userId', verifyToken, canViewPage, async (req, res) => {
-    const userData = res.locals.userData
-    try {
-        const tasks = await Task.find({'_id': { $in: userData.tasks }})
-        res.status(200).json(tasks)
-    } catch (err) {
-        res.status(500).send()
-    }
+    const usersData = await UserData.find({employeeId: req.params.userId}).populate('tasks')
+    const tasks = usersData.filter(userData => userData.tasks.length > 0)
+    res.send(tasks)
 })
 
-router.patch('/:userId/:taskId', verifyToken, canViewPage, async (req, res) => {
+// Create new task
+router.post('/:userId', verifyToken, (req, res) => {
+    // Only employer can create new task
+    if (req.user.role === ROLE.EMPLOYEE && req.user.role === ROLE.ADMIN) return res.status(403).send()
+    // Query for user data
+    UserData.findOne({employeeId: req.params.userId, employerId: req.user._id}, (err, userData) => {
+        if (err) return res.status(404).send()
+        // Create new task
+        const newTask = new Task({
+            text: req.body.text,
+            state: req.body.state
+        })
+        // Save new task
+        newTask.save().then(() => {
+            userData.tasks.push(newTask)
+            userData.save().then(result => console.log(result)).catch(err => res.status(500).json(err))
+        })
+        res.send()
+    })
+})
+
+// Change task state
+router.patch('/:userId/:taskId', verifyToken, canPatchTask, (req, res) => {
     const newState = req.body.state
     if (!Object.values(STATE).includes(newState)) return res.status(400).json({error: "Invalid state"})
     if (newState === STATE.FINISHED && req.user.role === ROLE.EMPLOYEE) return res.status(405).json({ error: "Employee can't set finished status"})
-    await Task.findByIdAndUpdate(req.params.taskId, { state: newState }, { useFindAndModify: false })
+    Task.findByIdAndUpdate(req.params.taskId, { state: newState }, { useFindAndModify: false })
     .exec()
     .then(result => {
         res.status(200).send('Updated')

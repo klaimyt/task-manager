@@ -1,12 +1,15 @@
+// Frameworks
 const express = require('express')
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
-const User = require('../models/DB/User')
-const { registerValidation, passwordValidation } = require('../premissions/validation')
-const { isAdmin } = require('../premissions/authorization')
+//Premissions
+const verifyToken = require('../permissions/verifyToken')
+const { registerValidation, passwordValidation } = require('../permissions/validation')
+const { isAdmin } = require('../permissions/authorization')
+// Data model
 const ROLE = require('../models/Role')
-const verifyToken = require('../premissions/verifyToken')
 const UserData = require('../models/DB/UserData')
+const User = require('../models/DB/User')
 
 
 const router = express.Router()
@@ -20,9 +23,10 @@ router.get('/', verifyToken, isAdmin, async (req, res) => {
 // Create new user
 router.post('/createUser', verifyToken, isAdmin, async (req, res) => {
     const {error} = registerValidation(req.body)
+    if (!Object.values(ROLE).includes(req.body.role)) return res.status(400).json({error: "Bad Role"})
     if (error) return res.status(400).json({error: error.details[0].message})
-    // If email exists
-    if (await User.findOne({email: req.body.email})) return res.status(400).json({error: "Email already exsists"})
+    // If username exists
+    if (await User.findOne({username: req.body.username})) return res.status(400).json({error: "Username already exsists"})
 
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         if (err) return res.status(500).json({error: err})
@@ -30,7 +34,7 @@ router.post('/createUser', verifyToken, isAdmin, async (req, res) => {
         const newUser = new User({
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
-            email: req.body.email,
+            username: req.body.username,
             password: hash,
             role: req.body.role
         })
