@@ -44,7 +44,7 @@ router.patch('/:userId/:taskId', verifyToken, canPatchTask, (req, res) => {
     const newState = req.body.state
     if (!Object.values(STATE).includes(newState)) return res.status(400).json({error: "Invalid state"})
     if (newState === STATE.FINISHED && req.user.role === ROLE.EMPLOYEE) return res.status(405).json({ error: "Employee can't set finished status"})
-    Task.findByIdAndUpdate(req.params.taskId, { state: newState }, { useFindAndModify: false })
+    Task.findByIdAndUpdate(req.params.taskId, { state: newState, updatedDate: Date.now() }, { useFindAndModify: false })
     .exec()
     .then(result => {
         res.status(200).send('Updated')
