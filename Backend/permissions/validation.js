@@ -6,7 +6,7 @@ const registerValidation = (user) => {
         name: Joi.string()
             .required(),
         username: Joi.string()
-            .min(6)
+            .min(5)
             .required(),
         password: Joi.string()
             .min(8)
