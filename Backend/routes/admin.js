@@ -10,6 +10,8 @@ const { isAdmin } = require('../permissions/authorization')
 const ROLE = require('../models/Role')
 const UserData = require('../models/DB/UserData')
 const User = require('../models/DB/User')
+// functions
+const { deleteRelationship } = require('./functions')
 
 
 const router = express.Router()
@@ -71,6 +73,11 @@ router.patch('/:userId/changePassword', verifyToken, isAdmin, (req, res) => {
 
 // Delete user
 router.delete('/:userId', verifyToken, isAdmin, (req, res) => {
+    UserData.find({$or: [{employeeId: req.params.userId}, {employerId: req.params.userId}]}, (err, userData) => {
+        if (err) return res.status(500).send()
+        if (!userData) return res.status(404).send()
+        deleteRelationship(userData, res)
+    })
     User.findByIdAndDelete(req.params.userId, (err, result) => {
         if (err) return res.status(404).json(err)
         res.json(result)
@@ -108,11 +115,9 @@ router.post('/relationship', verifyToken, isAdmin, async (req, res) => {
 })
 
 // Delete relationship
-router.delete('/relationship/:id', (req, res) => {
-    UserData.findByIdAndDelete(req.params.id, (err, result) => {
-        if (err) return res.status(404).json(err)
-        res.send()
-    })
+router.delete('/relationship/:id', async (req, res) => {
+    await deleteRelationship(req.params.id, res)
+    res.send()
 })
 
 module.exports = router

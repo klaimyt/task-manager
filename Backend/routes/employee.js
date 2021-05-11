@@ -20,11 +20,17 @@ router.get('/:userId', verifyToken, canViewPage, async (req, res) => {
 
 // Create new task
 router.post('/:userId', verifyToken, (req, res) => {
+    // Validate state
+    const newState = req.body.state
+    if (!Object.values(STATE).includes(newState)) req.body.state = STATE.TODO
+    // Validate text
+    if (!req.body.text) return res.status(400).send()
     // Only employer can create new task
     if (req.user.role === ROLE.EMPLOYEE && req.user.role === ROLE.ADMIN) return res.status(403).send()
     // Query for user data
     UserData.findOne({employeeId: req.params.userId, employerId: req.user._id}, (err, userData) => {
         if (err) return res.status(404).send()
+        if (!userData) return res.status(404).send( )
         // Create new task
         const newTask = new Task({
             text: req.body.text,
@@ -33,7 +39,7 @@ router.post('/:userId', verifyToken, (req, res) => {
         // Save new task
         newTask.save().then(() => {
             userData.tasks.push(newTask)
-            userData.save().then(result => console.log(result)).catch(err => res.status(500).json(err))
+            userData.save().then().catch(err => res.status(500).json(err))
         })
         res.send()
     })
