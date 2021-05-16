@@ -1,10 +1,20 @@
 import "./App.css";
-import Registration from './components/pages/Registration'
+import { Route, Switch } from "react-router-dom";
+// Routes
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
     <div className="app">
-      <Registration />
+      <Switch>
+        <Route path="/" exact>
+          <Dashboard />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+      </Switch>
     </div>
   );
 }
