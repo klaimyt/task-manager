@@ -23,7 +23,11 @@ router.post('/login', async (req, res) => {
         // JWT Token
         const token = jwt.sign({_id: user.id, role: user.role}, process.env.JWT_SECRET)
         res.cookie('access_token', 'Bearer ' + token,  {httpOnly: true, sameSite: 'strict', expires: new Date(Date.now() + 24 * 3600000) })
-        res.status(200).json({token: token})
+        res.status(200).json({
+            name: user.name,
+            username: user.username,
+            role: user.role
+        })
     } catch (err) {
         res.status(500).json({error:err})
     }
