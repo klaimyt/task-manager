@@ -1,0 +1,14 @@
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    margin: 0 auto;
+    background: #4f4f4f;
+}
+
+.h2 {
+    margin: 10px;
+    color: #f3f3f3;
+    font-weight: 400;
+}
