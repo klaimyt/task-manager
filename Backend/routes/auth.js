@@ -26,10 +26,11 @@ router.post('/login', async (req, res) => {
         res.status(200).json({
             name: user.name,
             username: user.username,
-            role: user.role
+            role: user.role,
+            id: user._id
         })
     } catch (err) {
-        res.status(500).json({error:err})
+        res.status(500).json({error:'Ooops... There is server side problem.'})
     }
 })
 
