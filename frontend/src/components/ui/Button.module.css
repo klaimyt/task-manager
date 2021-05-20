@@ -5,10 +5,16 @@ button {
   border-radius: 10px;
   cursor: pointer;
   text-transform: uppercase;
+  transition: transform 300ms ease-out;
+}
+
+button:hover {
+  transform: scale(1.05);
 }
 
 button:active {
   transform: scale(0.96);
+  filter: contrast(120%)
 }
 
 .btn-long {

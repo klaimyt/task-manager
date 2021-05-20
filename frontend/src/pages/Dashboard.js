@@ -118,7 +118,6 @@ const Dashboard = () => {
                       color: "white",
                     }}
                   />
-                  {/* <p key={task.id + "state"}>State: {task.state}</p> */}
                 </Cell>
               </Link>
             );
