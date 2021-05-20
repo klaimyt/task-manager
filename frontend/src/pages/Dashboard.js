@@ -62,7 +62,18 @@ const Dashboard = () => {
       });
   }
 
-  function requserEmployerData() {}
+  function requserEmployerData() {
+    axios.get(`${apiUrl}employer/`, { withCredentials: true }).then((res) => {
+      const employees = res.data.map((userData) => {
+        return {
+          text: userData.employeeId.name,
+          secondaryText: userData.tasks.length,
+          id: userData.employeeId._id,
+        };
+      });
+      setData(employees);
+    });
+  }
 
   function requestAdminData() {}
 
@@ -111,13 +122,17 @@ const Dashboard = () => {
               <Link key={task.id} to="/">
                 <Cell>
                   <h3 key={task.id + "text"}>{task.text}</h3>
-                  <Button
-                    text={task.state}
-                    style={{
-                      backgroundColor: styleToState(task.state),
-                      color: "white",
-                    }}
-                  />
+                  {task.state ? (
+                    <Button
+                      text={task.state}
+                      style={{
+                        backgroundColor: styleToState(task.state),
+                        color: "white",
+                      }}
+                    />
+                  ) : (
+                    <p key={task._id + "state"}>State: {task.secondaryText}</p>
+                  )}
                 </Cell>
               </Link>
             );

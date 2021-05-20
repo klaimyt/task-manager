@@ -3,7 +3,7 @@
   align-items: center;
   cursor: pointer;
   padding: 0.3rem;
-  transition: 700ms ease;
+  transition: 300ms ease;
 }
 
  .div h2 { 
@@ -11,7 +11,7 @@
   width: 0;
   white-space: nowrap;
   overflow: hidden;
-  transition: width 700ms ease;
+  transition: width 300ms ease;
 }
 
 .div:hover {
