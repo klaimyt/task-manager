@@ -4,6 +4,7 @@ import Cell from "../components/Cell";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Button from "../components/ui/Button";
 
 const Dashboard = () => {
   const apiUrl = "http://localhost:5000/api/";
@@ -40,17 +41,17 @@ const Dashboard = () => {
     axios
       .get(`${apiUrl}employee/${userId}`, { withCredentials: true })
       .then((res) => {
-        // const task = res.data.map(rel => {
-        //   return rel.tasks.map(task => {
-        //     return {
-        //       text: task.text,
-        //       state: task.state,
-        //       date: task.updatedDate || task.creatingDate,
-        //       id: task._id
-        //     }
-        //   })
-        // })
-        // setData(task.flat())
+        const task = res.data.map((rel) => {
+          return rel.tasks.map((task) => {
+            return {
+              text: task.text,
+              state: task.state,
+              date: task.updatedDate || task.creatingDate,
+              id: task._id,
+            };
+          });
+        });
+        setData(task.flat());
       })
       .catch((err) => {
         // TODO: Alert error
@@ -65,30 +66,63 @@ const Dashboard = () => {
 
   function requestAdminData() {}
 
+  function styleToState(state) {
+    switch (state) {
+      case "To do":
+        return "#e74c3c";
+      case "In progress":
+        return "#f39c12";
+      case "Done":
+        return "##1abc9c";
+      case "Finished":
+        return "#2ecc71";
+    }
+  }
+
   if (data.length < 1) {
     return (
-      <Content style={{justifyContent: 'center', alignItems: 'center', paddingTop: '30vh'}}>
-      <h1 style={{textAlign: "center", fontSize: '3rem', color: '#2f2f2f', fontWeight: '300'}}>You have no tasks.</h1>
+      <Content
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: "30vh",
+        }}
+      >
+        <h1
+          style={{
+            textAlign: "center",
+            fontSize: "3rem",
+            color: "#2f2f2f",
+            fontWeight: "300",
+          }}
+        >
+          You have no tasks.
+        </h1>
       </Content>
-    )
+    );
   }
 
   return (
     <>
       <Content>
         <ul style={{ listStyle: "none", maxWidth: "70%", flexGrow: "1" }}>
-          {data.length > 0
-            ? data.map((task) => {
-                return (
-                  <Link key={task.id} to="/">
-                    <Cell>
-                      <h3 key={task.id + "text"}>{task.text}</h3>
-                      <p key={task.id + "state"}>State: {task.state}</p>
-                    </Cell>
-                  </Link>
-                );
-              })
-            : "No data"}
+          {data.map((task) => {
+            return (
+              <Link key={task.id} to="/">
+                <Cell>
+                  <h3 key={task.id + "text"}>{task.text}</h3>
+                  <Button
+                    text={task.state}
+                    style={{
+                      backgroundColor: styleToState(task.state),
+                      color: "white",
+                    }}
+                  />
+                  {/* <p key={task.id + "state"}>State: {task.state}</p> */}
+                </Cell>
+              </Link>
+            );
+          })}
         </ul>
         <div style={{ margin: "0 30px" }}>
           <div>
