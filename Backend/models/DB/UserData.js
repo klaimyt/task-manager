@@ -2,10 +2,12 @@ const mongoose = require('mongoose')
 
 const userDataSchema = mongoose.Schema({
     employerId: {
-        type: String
+        type: String,
+        ref: 'User'
     },
     employeeId: {
-        type: String
+        type: String,
+        ref: 'User'
     },
     tasks: [{
         type: mongoose.Schema.ObjectId,
