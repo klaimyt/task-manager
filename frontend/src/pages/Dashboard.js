@@ -40,10 +40,17 @@ const Dashboard = () => {
     axios
       .get(`${apiUrl}employee/${userId}`, { withCredentials: true })
       .then((res) => {
-        const arraysOfTasks = res.data.map((relationships) => {
-          return relationships.tasks;
-        });
-        setData(arraysOfTasks.flat(), []);
+        const task = res.data.map(rel => {
+          return rel.tasks.map(task => {
+            return {
+              text: task.text,
+              state: task.state,
+              date: task.updatedDate || task.creatingDate,
+              id: task._id
+            }
+          })
+        })
+        setData(task.flat())
       })
       .catch((err) => {
         // TODO: Alert error
@@ -65,10 +72,10 @@ const Dashboard = () => {
           {data.length > 0
             ? data.map((task) => {
                 return (
-                  <Link key={task._id} to="/">
+                  <Link key={task.id} to="/">
                     <Cell>
-                      <h3 key={task._id + "text"}>{task.text}</h3>
-                      <p key={task._id + "state"}>State: {task.state}</p>
+                      <h3 key={task.id + "text"}>{task.text}</h3>
+                      <p key={task.id + "state"}>State: {task.state}</p>
                     </Cell>
                   </Link>
                 );
