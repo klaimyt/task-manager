@@ -40,17 +40,17 @@ const Dashboard = () => {
     axios
       .get(`${apiUrl}employee/${userId}`, { withCredentials: true })
       .then((res) => {
-        const task = res.data.map(rel => {
-          return rel.tasks.map(task => {
-            return {
-              text: task.text,
-              state: task.state,
-              date: task.updatedDate || task.creatingDate,
-              id: task._id
-            }
-          })
-        })
-        setData(task.flat())
+        // const task = res.data.map(rel => {
+        //   return rel.tasks.map(task => {
+        //     return {
+        //       text: task.text,
+        //       state: task.state,
+        //       date: task.updatedDate || task.creatingDate,
+        //       id: task._id
+        //     }
+        //   })
+        // })
+        // setData(task.flat())
       })
       .catch((err) => {
         // TODO: Alert error
@@ -64,6 +64,14 @@ const Dashboard = () => {
   function requserEmployerData() {}
 
   function requestAdminData() {}
+
+  if (data.length < 1) {
+    return (
+      <Content style={{justifyContent: 'center', alignItems: 'center', paddingTop: '30vh'}}>
+      <h1 style={{textAlign: "center", fontSize: '3rem', color: '#2f2f2f', fontWeight: '300'}}>You have no tasks.</h1>
+      </Content>
+    )
+  }
 
   return (
     <>
