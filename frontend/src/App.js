@@ -1,42 +1,25 @@
 import "./App.css";
-import { Route, Switch, useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
-import LoadingAnimation from "react-spinner-material";
+import { Route, Switch } from "react-router-dom";
+// import { useState, useEffect } from "react";
 // Routes
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from './layout/Navbar/Navbar'
 
 function App() {
-  const history = useHistory();
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const role = localStorage.getItem("role");
-    if (!role) {
-      history.push("/login");
-    }
-    setLoading(false);
-  }, [history]);
+  function checkAuth() {
+      const user = localStorage.getItem('username')
+      return user ? true : false 
+  }
 
   return (
     <div className="app">
-      {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <LoadingAnimation radius={80} />
-        </div>
-      ) : (
-        <Switch>
-          <Route path="/" exact component={Dashboard} />
-          <Route path="/login" component={Login} />
-        </Switch>
-      )}
+      <Navbar />
+      <Switch>
+        <Route path="/login" exact component={Login} />
+        <ProtectedRoute path="/" exact component={Dashboard} isAuth={checkAuth} />
+      </Switch>
     </div>
   );
 }

@@ -1,8 +1,7 @@
 import React from "react";
-import Navbar from "../layout/Navbar";
 import Content from "../components/Content";
 import Cell from "../components/Cell";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -11,6 +10,7 @@ const Dashboard = () => {
   const role = localStorage.getItem("role");
   const userId = localStorage.getItem("id");
   const [data, setData] = useState([]);
+  const history = useHistory();
 
   useEffect(requestData, []);
 
@@ -25,22 +25,33 @@ const Dashboard = () => {
       case "employer":
         requserEmployerData();
         break;
-      //default:
+      default:
+        throwUser();
       //TODO Handle error
     }
+  }
+
+  function throwUser() {
+    localStorage.clear();
+    history.push("/login");
   }
 
   function requestEmployeeData() {
     axios
       .get(`${apiUrl}employee/${userId}`, { withCredentials: true })
       .then((res) => {
-        const arraysOfTasks = res.data.map(relationships => {
-          return relationships.tasks
-        })
-        console.log(arraysOfTasks)
-        setData(arraysOfTasks.flat())
+        const arraysOfTasks = res.data.map((relationships) => {
+          return relationships.tasks;
+        });
+        setData(arraysOfTasks.flat(), []);
       })
-      .catch((err) => console.log(err)); // TODO handle error
+      .catch((err) => {
+        // TODO: Alert error
+        if (err.response.status === 401) {
+          localStorage.clear();
+          history.push("/login");
+        }
+      });
   }
 
   function requserEmployerData() {}
@@ -49,7 +60,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <Navbar />
       <Content>
         <ul style={{ listStyle: "none", maxWidth: "70%", flexGrow: "1" }}>
           {data.length > 0
@@ -57,8 +67,8 @@ const Dashboard = () => {
                 return (
                   <Link key={task._id} to="/">
                     <Cell>
-                      <h3 key={task._id+'text'}>{task.text}</h3>
-                      <p key={task._id+'state'}>State: {task.state}</p>
+                      <h3 key={task._id + "text"}>{task.text}</h3>
+                      <p key={task._id + "state"}>State: {task.state}</p>
                     </Cell>
                   </Link>
                 );

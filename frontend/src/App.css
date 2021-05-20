@@ -50,24 +50,3 @@ form {
   text-align: start;
   display: block;
 } */
-
-.btn-long {
-  margin: 10px;
-  width: 60%;
-  height: 2rem;
-  font-size: 24;
-  background: #4f4f4f;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.btn-long:active {
-  background: #292929;
-  transform: scale(0.96);
-}
-
-.mr-h-3 {
-  margin: 3rem 0;
-}

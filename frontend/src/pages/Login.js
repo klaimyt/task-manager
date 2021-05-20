@@ -3,7 +3,8 @@ import Card from "../components/ui/Card";
 import TextForm from "../components/ui/TextForm";
 import axios from "axios";
 import { useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
+import Button from '../components/ui/Button'
 
 const Login = () => {
   const usernameRef = useRef(null);
@@ -44,6 +45,11 @@ const Login = () => {
     });
   }
 
+  // If user already logged in
+  if (localStorage.getItem('name')) {
+    return <Redirect to='/' />
+  }
+
   return (
     <Card>
       {error ? (
@@ -67,7 +73,7 @@ const Login = () => {
           minLength={8}
           inputRef={passwordRef}
         />
-        <button className="btn-long mr-h-3">SIGN IN</button>
+        <Button isLong={true} style={{marginTop: '2rem'}} text="sign in"/>
       </form>
     </Card>
   );
