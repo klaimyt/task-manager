@@ -14,7 +14,7 @@ function canViewPage(req, res, next) {
                     return
             } 
         }
-        return res.status(401).send("Access denied")
+        return res.status(403).send("Access denied")
     })
 }
 

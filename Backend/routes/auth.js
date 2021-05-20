@@ -34,4 +34,9 @@ router.post('/login', async (req, res) => {
     }
 })
 
+router.delete('/login', (req, res) => {
+    res.clearCookie('access_token', {httpOnly: true, sameSite: 'strict'})
+    res.send()
+})
+
 module.exports = router
