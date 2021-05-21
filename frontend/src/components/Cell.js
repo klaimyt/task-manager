@@ -1,10 +1,10 @@
 import React from "react";
 import classes from "./Cell.module.css";
 
-const Cell = ({ children }) => {
+const Cell = ({ children, ...rest }) => {
   return (
     <li>
-      <div className={classes.cell}>
+      <div {...rest} className={classes.cell}>
         {children}
       </div>
     </li>

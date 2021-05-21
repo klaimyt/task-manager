@@ -21,7 +21,7 @@ const Dashboard = () => {
         requestAdminData();
         break;
       case "employee":
-        requestEmployeeData();
+        requestEmployeeData(userId);
         break;
       case "employer":
         requserEmployerData();
@@ -37,9 +37,9 @@ const Dashboard = () => {
     history.push("/login");
   }
 
-  function requestEmployeeData() {
+  function requestEmployeeData(id) {
     axios
-      .get(`${apiUrl}employee/${userId}`, { withCredentials: true })
+      .get(`${apiUrl}employee/${id}`, { withCredentials: true })
       .then((res) => {
         const task = res.data.map((rel) => {
           return rel.tasks.map((task) => {
@@ -76,6 +76,17 @@ const Dashboard = () => {
   }
 
   function requestAdminData() {}
+
+  function cellAction(task) {
+    switch (role) {
+      case "admin":
+        break;
+      case "employee":
+        break;
+      case "employer":
+        requestEmployeeData(task.id);
+    }
+  }
 
   function styleToState(state) {
     switch (state) {
@@ -119,22 +130,20 @@ const Dashboard = () => {
         <ul style={{ listStyle: "none", maxWidth: "70%", flexGrow: "1" }}>
           {data.map((task) => {
             return (
-              <Link key={task.id} to="/">
-                <Cell>
-                  <h3 key={task.id + "text"}>{task.text}</h3>
-                  {task.state ? (
-                    <Button
-                      text={task.state}
-                      style={{
-                        backgroundColor: styleToState(task.state),
-                        color: "white",
-                      }}
-                    />
-                  ) : (
-                    <p key={task._id + "state"}>State: {task.secondaryText}</p>
-                  )}
-                </Cell>
-              </Link>
+              <Cell onClick={() => cellAction(task)}>
+                <h3 key={task.id + "text"}>{task.text}</h3>
+                {task.state ? (
+                  <Button
+                    text={task.state}
+                    style={{
+                      backgroundColor: styleToState(task.state),
+                      color: "white",
+                    }}
+                  />
+                ) : (
+                  <p key={task._id + "state"}>State: {task.secondaryText}</p>
+                )}
+              </Cell>
             );
           })}
         </ul>
