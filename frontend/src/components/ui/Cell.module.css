@@ -15,7 +15,7 @@
   border-color:#555555
 }
 
-h3 {
+.cell h3 {
   font-weight: 400;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -25,7 +25,7 @@ h3 {
   max-width: 90%;
 }
 
-p {
+.cell p {
     font-weight: 300;
     font-size: 20px;
     width: 10%;
