@@ -8,7 +8,8 @@ const UserData = require("../models/DB/UserData");
 const router = express.Router();
 
 // Get all availabel employees
-router.get("/", verifyToken, async (req, res) => {
+// TODO: DB Should find userdata by request employerId
+router.get("/:employerId", verifyToken, async (req, res) => {
   UserData.find({ employerId: req.user._id })
     .populate("employeeId", "-password -__v")
     .select("-__v")

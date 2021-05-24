@@ -13,7 +13,7 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopo
     .catch((err) => console.log(err))
 
 
-server.use(cors({credentials: true}))
+server.use(cors({ origin: process.env.CLIENT_ORIGIN, credentials: true, methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']}))
 server.use(cookieParser())
 server.use(express.json())
 server.use('/api/auth', require('./routes/auth'))
