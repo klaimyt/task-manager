@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Dashboard from "../components/ui/Dashboard";
 import { useParams, useHistory } from "react-router-dom";
 import config from '../config.json'
+import NavbarContext from '../store/navbar-context'
 
 const Employer = () => {
+  const navbarCtx = useContext(NavbarContext)
+
+  
+
   const { employerId } = useParams();
   const [data, setData] = useState([]);
   const history = useHistory();
 
-  useEffect(requstData, [])
+  useEffect(() => {
+    requstData()
+    navbarCtx.setTitle("Employees")
+    navbarCtx.setButtons({logoutButton: true})
+  }, [])
 
   function requstData() {
     axios
