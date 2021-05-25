@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   Power,
   ArrowLeftCircleFill,
@@ -10,6 +10,10 @@ import NavElement from "./NavElement";
 import NavButton from "./NavButton";
 import NavbarContext from "../../store/navbar-context";
 
+import Modal from "../../components/ui/Modal";
+import TextAreaForm from "../../components/ui/TextAreaForm";
+import Button from '../../components/ui/Button'
+
 import classes from "./Navbar.module.css";
 
 const Navbar = () => {
@@ -18,6 +22,7 @@ const Navbar = () => {
   const buttons = navbarCtx.buttons;
   const history = useHistory();
   const location = useLocation();
+  const [modalIsVisible, setModalIsVisible] = useState(false)
 
   // Api req
   function handleLogout() {
@@ -46,7 +51,7 @@ const Navbar = () => {
     const elements = e.target.children;
     for (const element of elements) {
       if (element.tagName === "H2") {
-        element.style.width = '0';
+        element.style.width = "0";
         return;
       }
     }
@@ -62,7 +67,7 @@ const Navbar = () => {
             onMouseEnterHandler(e);
           }}
           onMouseLeave={(e) => {
-            onMouseLeaveHandler(e)
+            onMouseLeaveHandler(e);
           }}
         >
           <Power style={{ color: "#fff", fontSize: "1.5rem" }} />
@@ -81,7 +86,7 @@ const Navbar = () => {
             onMouseEnterHandler(e);
           }}
           onMouseLeave={(e) => {
-            onMouseLeaveHandler(e)
+            onMouseLeaveHandler(e);
           }}
         >
           <ArrowLeftCircleFill style={{ color: "#fff", fontSize: "1.5rem" }} />
@@ -99,14 +104,25 @@ const Navbar = () => {
             onMouseEnterHandler(e);
           }}
           onMouseLeave={(e) => {
-            onMouseLeaveHandler(e)
+            onMouseLeaveHandler(e);
           }}
+          onClick={() => setModalIsVisible(true)}
         >
           <ClipboardPlus style={{ color: "#fff", fontSize: "1.5rem" }} />
           <h2>New Task</h2>
         </NavButton>
       );
     }
+  }
+
+  function createNewTaskModal() {
+    return <Modal isVisible={modalIsVisible} onClose={() => setModalIsVisible(false)}>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <TextAreaForm labelText='New Task:' inputId='taskTextArea'/>
+        <Button isLong={true} text='Create' />
+        <Button onClick={() => setModalIsVisible(false)} text='Cancel' />
+      </form>
+    </Modal>
   }
 
   // Component
@@ -126,11 +142,11 @@ const Navbar = () => {
       <NavElement>
         <h2>{title}</h2>
       </NavElement>
-
       <NavElement>
         {createTaskButton()}
         {logoutButton()}
       </NavElement>
+      {createNewTaskModal()}
     </div>
   );
 };

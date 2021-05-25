@@ -17,15 +17,15 @@ const Employee = () => {
     requstData();
     navbarCtx.setTitle("Tasks");
     if (role === "employer") {
-      navbarCtx.setButtons({  
+      navbarCtx.setButtons({
         backButton: true,
         logoutButton: true,
         createTaskButton: true,
-      })
+      });
     } else {
       navbarCtx.setButtons({
-        logoutButton: true
-      })
+        logoutButton: true,
+      });
     }
   }, []);
 

@@ -3,7 +3,6 @@ import Content from "./Content";
 import SideBlock from "./SideBlock";
 import Cell from "./Cell";
 import Loading from "react-spinner-material";
-import Button from "./Button";
 
 const Dashboard = (props) => {
   if (!props.data) {
