@@ -1,9 +1,9 @@
 import React from 'react'
 import classes from './NavButton.module.css'
 
-const NavButton = ({children, onClick}) => {
+const NavButton = ({children, onClick, ...rest}) => {
   return (
-    <div className={classes.div} onClick={onClick}>
+    <div {...rest} className={classes.div} onClick={onClick}>
       {children}
     </div>
   )

@@ -1,17 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Dashboard from "../components/ui/Dashboard";
 import { useParams, useHistory } from "react-router-dom";
 import config from "../config.json";
+import NavbarContext from "../store/navbar-context";
 
 const Employee = () => {
+  const navbarCtx = useContext(NavbarContext);
   const { employeeId } = useParams();
   const [data, setData] = useState([]);
   const history = useHistory();
   const states = ["To do", "In progress", "Done", "Finished"];
   const role = localStorage.getItem("role");
 
-  useEffect(requstData, []);
+  useEffect(() => {
+    requstData();
+    navbarCtx.setTitle("Tasks");
+    if (role === "employer") {
+      navbarCtx.setButtons({  
+        backButton: true,
+        logoutButton: true,
+        createTaskButton: true,
+      })
+    } else {
+      navbarCtx.setButtons({
+        logoutButton: true
+      })
+    }
+  }, []);
 
   function requstData() {
     axios

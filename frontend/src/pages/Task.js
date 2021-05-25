@@ -1,18 +1,25 @@
 import axios from "axios";
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Content from "../components/ui/Content";
 import MainBlock from "../components/ui/MainBlock";
 import SideBlock from "../components/ui/SideBlock";
 import config from "../config.json";
 import Loading from "react-spinner-material";
+import NavbarContext from "../store/navbar-context";
 
 const Task = () => {
   const [data, setData] = useState(null);
   const { employeeId, taskId } = useParams();
+  const navbarCtx = useContext(NavbarContext)
 
   useEffect(() => {
     requsetTask();
+    navbarCtx.setTitle('Task')
+    navbarCtx.setButtons({
+      backButton: true,
+      logoutButton: true
+    })
   }, []);
 
   function requsetTask() {

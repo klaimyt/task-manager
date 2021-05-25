@@ -7,9 +7,6 @@ import NavbarContext from '../store/navbar-context'
 
 const Employer = () => {
   const navbarCtx = useContext(NavbarContext)
-
-  
-
   const { employerId } = useParams();
   const [data, setData] = useState([]);
   const history = useHistory();
