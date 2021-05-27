@@ -10,6 +10,7 @@ import Admin from './pages/Admin'
 import Employer from './pages/Employer'
 import Employee from './pages/Employee'
 import { NavbarContextProvider } from './store/navbar-context'
+import ModalContext, { ModalContextProvider } from './store/modal-context'
 
 function App() {
   function checkAuth() {
@@ -35,15 +36,17 @@ function App() {
   return (
     <div className="app">
       <NavbarContextProvider>
-        <Navbar />
-        <Switch>
-          <Route path="/login" exact component={Login} />
-          <ProtectedRoute path='/' exact component={() => redirect()} isAuth={checkAuth} />
-          <ProtectedRoute path="/employer/:employerId" exact component={Employer} isAuth={checkAuth} />
-          <ProtectedRoute path="/employee/:employeeId" exact component={Employee} isAuth={checkAuth} />
-          <ProtectedRoute path="/employee/:employeeId/:taskId" exact component={Task} isAuth={checkAuth} />
-          <ProtectedRoute path="/admin" component={Admin} isAuth={checkAuth} />
-        </Switch>
+        <ModalContextProvider>
+          <Navbar />
+          <Switch>
+            <Route path="/login" exact component={Login} />
+            <ProtectedRoute path='/' exact component={() => redirect()} isAuth={checkAuth} />
+            <ProtectedRoute path="/employer/:employerId" exact component={Employer} isAuth={checkAuth} />
+            <ProtectedRoute path="/employee/:employeeId" exact component={Employee} isAuth={checkAuth} />
+            <ProtectedRoute path="/employee/:employeeId/:taskId" exact component={Task} isAuth={checkAuth} />
+            <ProtectedRoute path="/admin" component={Admin} isAuth={checkAuth} />
+          </Switch>
+        </ModalContextProvider>
       </NavbarContextProvider>
     </div>
   );

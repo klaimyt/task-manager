@@ -3,8 +3,6 @@ import Backdrop from "./Backdrop";
 import Card from "./Card";
 
 const Modal = (props) => {
-  if (!props.isVisible) return null;
-
   return ReactDom.createPortal(
     <>
       <Card

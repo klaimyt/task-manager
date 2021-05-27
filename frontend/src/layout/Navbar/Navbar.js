@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext } from "react";
 import {
   Power,
   ArrowLeftCircleFill,
@@ -9,20 +9,17 @@ import { useHistory, useLocation } from "react-router-dom";
 import NavElement from "./NavElement";
 import NavButton from "./NavButton";
 import NavbarContext from "../../store/navbar-context";
-
-import Modal from "../../components/ui/Modal";
-import TextAreaForm from "../../components/ui/TextAreaForm";
-import Button from '../../components/ui/Button'
+import ModalContext from '../../store/modal-context'
 
 import classes from "./Navbar.module.css";
 
 const Navbar = () => {
   const navbarCtx = useContext(NavbarContext);
+  const modalCtx = useContext(ModalContext)
   const title = navbarCtx.title;
   const buttons = navbarCtx.buttons;
   const history = useHistory();
   const location = useLocation();
-  const [modalIsVisible, setModalIsVisible] = useState(false)
 
   // Api req
   function handleLogout() {
@@ -106,23 +103,13 @@ const Navbar = () => {
           onMouseLeave={(e) => {
             onMouseLeaveHandler(e);
           }}
-          onClick={() => setModalIsVisible(true)}
+          onClick={modalCtx.createNewTaskHandler}
         >
           <ClipboardPlus style={{ color: "#fff", fontSize: "1.5rem" }} />
           <h2>New Task</h2>
         </NavButton>
       );
     }
-  }
-
-  function createNewTaskModal() {
-    return <Modal isVisible={modalIsVisible} onClose={() => setModalIsVisible(false)}>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <TextAreaForm labelText='New Task:' inputId='taskTextArea'/>
-        <Button isLong={true} text='Create' />
-        <Button onClick={() => setModalIsVisible(false)} text='Cancel' />
-      </form>
-    </Modal>
   }
 
   // Component
@@ -146,7 +133,6 @@ const Navbar = () => {
         {createTaskButton()}
         {logoutButton()}
       </NavElement>
-      {createNewTaskModal()}
     </div>
   );
 };
