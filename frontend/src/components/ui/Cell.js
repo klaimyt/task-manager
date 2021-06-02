@@ -15,6 +15,8 @@ const Cell = ({ text, id, button, secondaryText, children, ...rest }) => {
         return "#1abc9c";
       case "Finished":
         return "#2ecc71";
+      default:
+        return null;
     }
   }
 

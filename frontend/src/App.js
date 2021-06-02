@@ -10,7 +10,7 @@ import Admin from './pages/Admin'
 import Employer from './pages/Employer'
 import Employee from './pages/Employee'
 import { NavbarContextProvider } from './store/navbar-context'
-import ModalContext, { ModalContextProvider } from './store/modal-context'
+import { ModalContextProvider } from './store/modal-context'
 
 function App() {
   function checkAuth() {

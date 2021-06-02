@@ -5,18 +5,22 @@ const ModalContext = createContext()
 
 export function ModalContextProvider(props) {
   const [component, setComponent] = useState(<></>)
+  const [isOpen, setIsOpen] = useState(false)
 
   const context = {
     createNewTaskHandler: createNewTaskHandler,
-    onClose: onClose
+    onClose: onClose,
+    isOpen: isOpen
   }
 
   function createNewTaskHandler() {
    setComponent(<CreateNewTask />)
+   setIsOpen(true)
   }
 
   function onClose() {
     setComponent(null)
+    setIsOpen(false)
   }
 
   return (

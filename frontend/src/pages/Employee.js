@@ -4,17 +4,19 @@ import Dashboard from "../components/ui/Dashboard";
 import { useParams, useHistory } from "react-router-dom";
 import config from "../config.json";
 import NavbarContext from "../store/navbar-context";
+import requestEmployeeData from "../api/requestEmployeeData";
+import ModalContext from "../store/modal-context";
 
 const Employee = () => {
   const navbarCtx = useContext(NavbarContext);
+  const { isOpen } = useContext(ModalContext);
+  const [data, setData] = useState(null);
   const { employeeId } = useParams();
-  const [data, setData] = useState([]);
   const history = useHistory();
   const states = ["To do", "In progress", "Done", "Finished"];
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    requstData();
     navbarCtx.setTitle("Tasks");
     if (role === "employer") {
       navbarCtx.setButtons({
@@ -29,26 +31,14 @@ const Employee = () => {
     }
   }, []);
 
-  function requstData() {
-    axios
-      .get(`${config.API_URL}employee/${employeeId}`, { withCredentials: true })
-      .then((res) => {
-        const task = res.data.map((rel) => {
-          return rel.tasks.map((task) => {
-            return {
-              text: task.text,
-              state: task.state,
-              date: task.updatedDate || task.creatingDate,
-              id: task._id,
-            };
-          });
-        });
-        setData(task.flat());
-      })
-      .catch((err) => {
-        //TODO error handler
-      });
-  }
+  useEffect(() => {
+    if (isOpen) return;
+    const res = requestEmployeeData(employeeId);
+    res.then(({ error, data }) => {
+      if (error) return console.log(error);
+      setData(data);
+    });
+  }, [isOpen]);
 
   function getNextState(taskId) {
     const [task] = data.filter((task) => task.id === taskId);

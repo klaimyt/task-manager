@@ -1,19 +1,24 @@
 import React, { useRef, useContext } from 'react'
+import { useLocation } from 'react-router-dom'
 import Modal from '../ui/Modal'
 import TextAreaForm from '../ui/TextAreaForm'
-import CreateTask from '../../api/CreateTask'
+import createTask from '../../api/CreateTask'
 import Button from '../ui/Button'
 import ModalContext from '../../store/modal-context'
 
 const CreateNewTask = () => {
   const modalCtx = useContext(ModalContext)
   const newTaskTextArea = useRef()
+  const location = useLocation()
 
   function onSubmitHandler(event) {
     event.preventDefault()
     const taskText = newTaskTextArea.current.value
+    const currentPath = location.pathname
+    const employeeId = currentPath.split('/')
 
-    CreateTask('userId', taskText)
+    createTask(employeeId[employeeId.length - 1], taskText)
+    modalCtx.onClose()
   }
 
   return (
