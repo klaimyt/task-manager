@@ -2,10 +2,7 @@ import axios from "axios";
 import config from "../config.json";
 
 export default async function requestEmployeeData(employeeId) {
-  let error = null
-  let data = null
-
-  await axios.get(
+  return await axios.get(
     `${config.API_URL}employee/${employeeId}`,
     {
       withCredentials: true,
@@ -21,10 +18,7 @@ export default async function requestEmployeeData(employeeId) {
         };
       });
     }); 
-    data = Array.from(tasks.flat());
-  }).catch(err => {
-    error = `Oooops, something went wrong... Error: ${err}`;
+    const a = Array.from(tasks.flat());
+    return a
   })
-
-  return {data, error}
 }

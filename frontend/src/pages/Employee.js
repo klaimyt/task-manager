@@ -11,6 +11,7 @@ const Employee = () => {
   const navbarCtx = useContext(NavbarContext);
   const { isOpen } = useContext(ModalContext);
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
   const { employeeId } = useParams();
   const history = useHistory();
   const states = ["To do", "In progress", "Done", "Finished"];
@@ -44,10 +45,11 @@ const Employee = () => {
   useEffect(() => {
     if (isOpen) return;
     const res = requestEmployeeData(employeeId);
-    res.then(({ error, data }) => {
-      if (error) return console.log(error);
-      setData(data);
-    });
+    res.then(data => {
+        setData(data)
+    }).catch(err => {
+      setError(err.response.data)
+    })
   }, [isOpen]);
 
   function getNextState(taskId) {
@@ -89,7 +91,7 @@ const Employee = () => {
 
   return (
     <Dashboard
-      data={data}
+      data={data || [{text: error, id: 'err'}]}
       action={cellClicked}
       secondaryAction={secondaryButtonClicked}
     />
