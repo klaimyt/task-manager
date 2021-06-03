@@ -2,15 +2,21 @@ import React from "react";
 import Card from "../components/ui/Card";
 import TextForm from "../components/ui/TextForm";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import Button from '../components/ui/Button'
+import NavbarContext from '../store/navbar-context'
 
 const Login = () => {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const [error, setError] = useState(null);
   const history = useHistory();
+  const navbarCtx = useContext(NavbarContext)
+
+  useEffect(() => {
+    navbarCtx.setTitle('Tasks Manager')
+  }, [])
 
   function submitHandler(event) {
     event.preventDefault();

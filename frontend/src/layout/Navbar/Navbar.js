@@ -117,7 +117,7 @@ const Navbar = () => {
     return (
       <div className={classes["nav-bar"]}>
         <NavElement>
-          <h2 style={{ padding: "0.5rem" }}>{"text"}</h2>
+          <h2 style={{ padding: "0.5rem" }}>{title}</h2>
         </NavElement>
       </div>
     );
