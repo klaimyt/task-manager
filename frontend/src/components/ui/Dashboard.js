@@ -26,7 +26,7 @@ const Dashboard = (props) => {
               id={task.id}
               text={task.text}
               button={task.state ? [task.state, props.secondaryAction] : null}
-              secondaryText={'State: ' + task.secondaryText}
+              secondaryText={task.secondaryText}
               onClick={() => {
                 props.action(task)}}
             />

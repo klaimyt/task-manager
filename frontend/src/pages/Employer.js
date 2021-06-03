@@ -2,20 +2,20 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Dashboard from "../components/ui/Dashboard";
 import { useParams, useHistory } from "react-router-dom";
-import config from '../config.json'
-import NavbarContext from '../store/navbar-context'
+import config from "../config.json";
+import NavbarContext from "../store/navbar-context";
 
 const Employer = () => {
-  const navbarCtx = useContext(NavbarContext)
+  const navbarCtx = useContext(NavbarContext);
   const { employerId } = useParams();
   const [data, setData] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
-    requstData()
-    navbarCtx.setTitle("Employees")
-    navbarCtx.setButtons({logoutButton: true})
-  }, [])
+    requstData();
+    navbarCtx.setTitle("Employees");
+    navbarCtx.setButtons({ logoutButton: true });
+  }, []);
 
   function requstData() {
     axios
@@ -24,7 +24,7 @@ const Employer = () => {
         const employees = res.data.map((userData) => {
           return {
             text: userData.employeeId.name,
-            secondaryText: userData.tasks.length,
+            secondaryText: "Tasks: " + userData.tasks.length,
             id: userData.employeeId._id,
           };
         });
@@ -36,7 +36,7 @@ const Employer = () => {
   }
 
   function clickHandler(cell) {
-    history.push(`/employee/${cell.id}`)
+    history.push(`/employee/${cell.id}`);
   }
 
   return <Dashboard data={data} action={clickHandler} />;
