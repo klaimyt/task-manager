@@ -5,7 +5,7 @@ const UserData = require('../models/DB/UserData')
 function canViewPage(req, res, next) {
     UserData.find({employeeId: req.params.userId}, (err, usersData) => {
         if (err) return res.status(500).send(err)
-        if (!usersData.length) return res.status(404).send("User not found")
+        if (!usersData.length) return res.status(404).send("Relationship not found")
         for (const userData of usersData) {
             if (userData.employeeId === req.user._id ||
                 userData.employerId === req.user._id ||
