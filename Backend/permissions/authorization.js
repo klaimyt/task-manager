@@ -36,4 +36,12 @@ function canPatchTask(req, res, next) {
     })
 }
 
-module.exports = { canViewPage, isAdmin, canPatchTask }
+function canAccessEmployerData(req, res, next) {
+    if (req.user.role === ROLE.ADMIN || req.user._id === req.params.employerId) {
+      next()
+    } else {
+      res.status(403).json({ error: "Access denied." })
+    }
+}
+
+module.exports = { canViewPage, isAdmin, canPatchTask, canAccessEmployerData }
