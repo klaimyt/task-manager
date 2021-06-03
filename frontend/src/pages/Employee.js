@@ -18,16 +18,26 @@ const Employee = () => {
 
   useEffect(() => {
     navbarCtx.setTitle("Tasks");
-    if (role === "employer") {
-      navbarCtx.setButtons({
-        backButton: true,
-        logoutButton: true,
-        createTaskButton: true,
-      });
-    } else {
-      navbarCtx.setButtons({
-        logoutButton: true,
-      });
+    switch (role) {
+      case "admin":
+        navbarCtx.setButtons({
+          backButton: true,
+          logoutButton: true,
+        });
+        return;
+      case "employer":
+        navbarCtx.setButtons({
+          backButton: true,
+          logoutButton: true,
+          createTaskButton: true,
+        });
+        return;
+      case "employee":
+        navbarCtx.setButtons({
+          logoutButton: true,
+        });
+      default:
+        break;
     }
   }, []);
 

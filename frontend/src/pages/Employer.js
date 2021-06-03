@@ -12,9 +12,14 @@ const Employer = () => {
   const history = useHistory();
 
   useEffect(() => {
+    const role = localStorage.getItem('role')
     requstData();
     navbarCtx.setTitle("Employees");
-    navbarCtx.setButtons({ logoutButton: true });
+    if (role === 'admin') {
+      navbarCtx.setButtons({ logoutButton: true ,backButton: true, changePasswordButton: true })
+    } else {
+      navbarCtx.setButtons({ logoutButton: true });
+    }
   }, []);
 
   function requstData() {

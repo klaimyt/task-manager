@@ -7,7 +7,7 @@ const NavbarContext = createContext({
   },
   title: '',
   setTitle: (title) => {},
-  setButtons: ({backButton, logoutButton, createTaskButton}) => {}
+  setButtons: ({backButton, logoutButton, createTaskButton, changePasswordButton}) => {}
 })
 
 export function NavbarContextProvider(props) {

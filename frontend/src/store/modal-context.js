@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react'
 import CreateNewTask from '../components/Modal/CreateNewTask'
+import ChangePassword from '../components/Modal/ChangePassword'
 
 const ModalContext = createContext()
 
@@ -9,6 +10,7 @@ export function ModalContextProvider(props) {
 
   const context = {
     createNewTaskHandler: createNewTaskHandler,
+    changePasswordHandler: changePasswordHandler,
     onClose: onClose,
     isOpen: isOpen
   }
@@ -16,6 +18,11 @@ export function ModalContextProvider(props) {
   function createNewTaskHandler() {
    setComponent(<CreateNewTask />)
    setIsOpen(true)
+  }
+
+  function changePasswordHandler() {
+    setComponent(<ChangePassword />)
+    setIsOpen(true)
   }
 
   function onClose() {

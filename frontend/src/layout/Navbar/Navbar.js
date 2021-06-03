@@ -3,6 +3,7 @@ import {
   Power,
   ArrowLeftCircleFill,
   ClipboardPlus,
+  Key
 } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
@@ -12,6 +13,7 @@ import NavbarContext from "../../store/navbar-context";
 import ModalContext from '../../store/modal-context'
 
 import classes from "./Navbar.module.css";
+import Button from "../../components/ui/Button";
 
 const Navbar = () => {
   const navbarCtx = useContext(NavbarContext);
@@ -93,7 +95,7 @@ const Navbar = () => {
     }
   }
 
-  function createTaskButton(userId) {
+  function createTaskButton() {
     if (buttons.createTaskButton) {
       return (
         <NavButton
@@ -109,6 +111,24 @@ const Navbar = () => {
           <h2>New Task</h2>
         </NavButton>
       );
+    }
+  }
+
+  function changePasswordButton() {
+    if (buttons.changePasswordButton) {
+      return (
+        <NavButton onMouseEnter={(e) => {
+          onMouseEnterHandler(e);
+        }}
+        onMouseLeave={(e) => {
+          onMouseLeaveHandler(e);
+        }}
+        onClick={modalCtx.changePasswordHandler}
+        >
+          <Key style={{ color: "#fff", fontSize: "1.5rem" }} />
+          <h2>Password</h2>
+        </NavButton>
+      )
     }
   }
 
@@ -130,6 +150,7 @@ const Navbar = () => {
         <h2>{title}</h2>
       </NavElement>
       <NavElement>
+        {changePasswordButton()}
         {createTaskButton()}
         {logoutButton()}
       </NavElement>

@@ -28,7 +28,6 @@ const Admin = () => {
         return;
       case 'employer':
         history.push(`/employer/${cell.id}`)
-        return
       default:
         return;
     }
