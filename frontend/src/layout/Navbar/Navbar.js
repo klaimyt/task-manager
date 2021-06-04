@@ -3,7 +3,8 @@ import {
   Power,
   ArrowLeftCircleFill,
   ClipboardPlus,
-  Key
+  Key,
+  PersonPlus
 } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
@@ -13,7 +14,6 @@ import NavbarContext from "../../store/navbar-context";
 import ModalContext from '../../store/modal-context'
 
 import classes from "./Navbar.module.css";
-import Button from "../../components/ui/Button";
 
 const Navbar = () => {
   const navbarCtx = useContext(NavbarContext);
@@ -132,6 +132,24 @@ const Navbar = () => {
     }
   }
 
+  function createNewUser() {
+    if (buttons.createNewUser) {
+      return (
+        <NavButton onMouseEnter={(e) => {
+          onMouseEnterHandler(e);
+        }}
+        onMouseLeave={(e) => {
+          onMouseLeaveHandler(e);
+        }}
+        onClick={modalCtx.createNewUserHandler}
+        >
+          <PersonPlus style={{ color: "#fff", fontSize: "1.5rem" }} />
+          <h2>New User</h2>
+        </NavButton>
+      )
+    }
+  }
+
   // Component
   if (location.pathname === "/login") {
     return (
@@ -145,7 +163,10 @@ const Navbar = () => {
 
   return (
     <div className={classes["nav-bar"]}>
-      <NavElement>{backButton()}</NavElement>
+      <NavElement>
+        {backButton()}
+        {createNewUser()}
+      </NavElement>
       <NavElement>
         <h2>{title}</h2>
       </NavElement>

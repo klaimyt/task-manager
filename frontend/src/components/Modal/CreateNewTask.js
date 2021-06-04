@@ -1,6 +1,6 @@
 import React, { useRef, useContext } from 'react'
 import { useLocation } from 'react-router-dom'
-import Modal from '../ui/Modal'
+import Modal from './Modal'
 import TextAreaForm from '../ui/TextAreaForm'
 import createTask from '../../api/CreateTask'
 import Button from '../ui/Button'

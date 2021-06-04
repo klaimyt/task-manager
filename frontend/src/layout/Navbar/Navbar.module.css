@@ -13,4 +13,5 @@ h2 {
     justify-content: space-around;
     margin: 0 auto;
     background: #4f4f4f;
+    z-index: 10;
 }

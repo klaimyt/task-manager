@@ -1,39 +1,46 @@
-import { createContext, useState } from 'react'
+import { createContext, useState } from "react";
 
 const NavbarContext = createContext({
   buttons: {
     backButton: false,
-    logoutButton: false
+    logoutButton: false,
   },
-  title: '',
+  title: "",
   setTitle: (title) => {},
-  setButtons: ({backButton, logoutButton, createTaskButton, changePasswordButton}) => {}
-})
+  setButtons: ({
+    backButton,
+    logoutButton,
+    createTaskButton,
+    changePasswordButton,
+    createNewUser,
+    createNewRelationship,
+  }) => {},
+});
 
 export function NavbarContextProvider(props) {
-  const [buttons, setButtons] = useState({})
-  const [title, setTitle] = useState('')
+  const [buttons, setButtons] = useState({});
+  const [title, setTitle] = useState("");
 
   const context = {
     buttons: buttons,
     title: title,
     setTitle: titleHandler,
-    setButtons: buttonsHandler
-  }
+    setButtons: buttonsHandler,
+  };
 
   function titleHandler(newTitle) {
-    setTitle(newTitle)
+    setTitle(newTitle);
   }
 
   function buttonsHandler(buttons) {
-    setButtons(buttons)
+    setButtons(buttons);
   }
 
   return (
     <NavbarContext.Provider value={context}>
       {props.children}
     </NavbarContext.Provider>
-  )
+  );
 }
 
-export default NavbarContext
+export default NavbarContext;

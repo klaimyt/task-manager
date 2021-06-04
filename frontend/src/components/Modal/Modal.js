@@ -1,13 +1,13 @@
 import ReactDom from "react-dom";
-import Backdrop from "./Backdrop";
-import Card from "./Card";
+import Backdrop from "../ui/Backdrop";
+import Card from "../ui/Card";
 
 const Modal = (props) => {
   return ReactDom.createPortal(
     <>
       <Card
         style={{
-          zIndex: 2,
+          zIndex: 100,
           position: "fixed",
           left: "25%",
           top: '3rem',

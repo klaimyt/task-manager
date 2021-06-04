@@ -1,6 +1,6 @@
 import React, { useRef, useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Modal from "../ui/Modal";
+import Modal from "./Modal";
 import TextForm from "../ui/TextForm";
 import changePassword from "../../api/changePassword";
 import Button from "../ui/Button";

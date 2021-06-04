@@ -2,23 +2,27 @@ import { useEffect, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Dashboard from "../components/ui/Dashboard";
 import NavbarContext from "../store/navbar-context";
+import ModalContext from "../store/modal-context";
 import requestAdminData from "../api/requestAdminData";
 
 const Admin = () => {
   const navbarCtx = useContext(NavbarContext);
   const [data, setData] = useState(null);
+  const { isOpen } = useContext(ModalContext);
   const history = useHistory();
 
   useEffect(() => {
     navbarCtx.setTitle("All Users");
-    navbarCtx.setButtons({ logoutButton: true });
+    navbarCtx.setButtons({ logoutButton: true, createNewUser: true });
   }, []);
 
   useEffect(() => {
-    requestAdminData().then((data) => {
-      setData(data);
-    });
-  }, []);
+    if (!isOpen) {
+      requestAdminData().then((data) => {
+        setData(data);
+      });
+    }
+  }, [isOpen]);
 
   function cellClickedHandler(cell) {
     const userRole = cell.secondaryText.split(" ");
@@ -26,8 +30,8 @@ const Admin = () => {
       case "employee":
         history.push(`/employee/${cell.id}`);
         return;
-      case 'employer':
-        history.push(`/employer/${cell.id}`)
+      case "employer":
+        history.push(`/employer/${cell.id}`);
       default:
         return;
     }
