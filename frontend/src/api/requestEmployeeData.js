@@ -18,7 +18,7 @@ export default async function requestEmployeeData(employeeId) {
         };
       });
     }); 
-    const a = Array.from(tasks.flat());
-    return a
+
+    return tasks.flat()
   })
 }

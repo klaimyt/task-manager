@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import Dashboard from "../components/ui/Dashboard";
 import { useParams, useHistory } from "react-router-dom";
-import config from "../config.json";
 import NavbarContext from "../store/navbar-context";
+import requestEmployerData from '../api/requestEmployerData'
 
 const Employer = () => {
   const navbarCtx = useContext(NavbarContext);
   const { employerId } = useParams();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null)
   const history = useHistory();
 
   useEffect(() => {
     const role = localStorage.getItem('role')
-    requstData();
     navbarCtx.setTitle("Employees");
     if (role === 'admin') {
       navbarCtx.setButtons({ logoutButton: true ,backButton: true, changePasswordButton: true })
@@ -22,29 +21,23 @@ const Employer = () => {
     }
   }, []);
 
-  function requstData() {
-    axios
-      .get(`${config.API_URL}employer/${employerId}`, { withCredentials: true })
-      .then((res) => {
-        const employees = res.data.map((userData) => {
-          return {
-            text: userData.employeeId.name,
-            secondaryText: "Tasks: " + userData.tasks.length,
-            id: userData.employeeId._id,
-          };
-        });
-        setData(employees);
-      })
-      .catch((err) => {
-        //TODO error handler
-      });
-  }
+  useEffect(() => {
+    requestEmployerData(employerId).then(employees => {
+      if (employees.length > 0) {
+        setData(employees)
+      } else {
+        setData([{text: "You have no employees", id: '0'}])
+      }
+    }).catch(err => {
+      setError(err.response.data)
+    })
+  }, [])
 
   function clickHandler(cell) {
     history.push(`/employee/${cell.id}`);
   }
 
-  return <Dashboard data={data} action={clickHandler} />;
+  return <Dashboard data={data || [{text: error, id: 'err'}]} action={clickHandler} />;
 };
 
 export default Employer;
