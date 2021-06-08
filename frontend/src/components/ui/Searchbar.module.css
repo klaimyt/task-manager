@@ -1,0 +1,40 @@
+.main {
+  width: 80%;
+  margin: 1rem auto;
+}
+
+.resBox {
+  position: absolute;
+  width: 79.5%;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 1px 5px 5px rgb(32 33 36 / 18%);;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.resBox ul {
+  list-style: none;
+  width: 100%;
+  margin: auto;
+}
+
+.resBox li {
+  padding: 0.3rem;
+  text-align: left;
+}
+
+.resBox span {
+  font-weight: 300;
+}
+
+.resBox li:hover {
+  background-color: #e6e6e6;
+}
+
+.hidden {
+  display: none;
+}
+
+.opened input {
+  border-radius: 10px 10px 0 0;
+}

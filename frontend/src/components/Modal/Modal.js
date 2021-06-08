@@ -3,6 +3,11 @@ import Backdrop from "../ui/Backdrop";
 import Card from "../ui/Card";
 
 const Modal = (props) => {
+  const scrollbarStyle = {
+    overflowY: "scroll",
+    height: "70vh",
+  };
+
   return ReactDom.createPortal(
     <>
       <Card
@@ -10,13 +15,13 @@ const Modal = (props) => {
           zIndex: 100,
           position: "fixed",
           left: "25%",
-          top: '3rem',
-          margin: '0',
+          top: "3rem",
+          margin: "0",
           width: "50%",
           maxWidth: "50%",
         }}
       >
-        {props.children}
+        <div style={scrollbarStyle}>{props.children}</div>
       </Card>
       <Backdrop onClick={props.onClose} />
     </>,

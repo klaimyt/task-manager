@@ -4,7 +4,8 @@ import {
   ArrowLeftCircleFill,
   ClipboardPlus,
   Key,
-  PersonPlus
+  PersonPlus,
+  People,
 } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
@@ -40,7 +41,7 @@ const Navbar = () => {
     for (const element of elements) {
       if (element.tagName === "H2") {
         const length = element.textContent.length;
-        element.style.width = `${length * 0.6}rem`;
+        element.style.width = `${length * 0.55}rem`;
         return;
       }
     }
@@ -150,6 +151,24 @@ const Navbar = () => {
     }
   }
 
+  function createNewRelationship() {
+    if (buttons.createNewRelationship) {
+      return (
+        <NavButton onMouseEnter={(e) => {
+          onMouseEnterHandler(e);
+        }}
+        onMouseLeave={(e) => {
+          onMouseLeaveHandler(e);
+        }}
+        onClick={modalCtx.createNewRelationship}
+        >
+          <People style={{ color: "#fff", fontSize: "1.5rem" }} />
+          <h2>New Relationship</h2>
+        </NavButton>
+      )
+    }
+  }
+
   // Component
   if (location.pathname === "/login") {
     return (
@@ -166,6 +185,7 @@ const Navbar = () => {
       <NavElement>
         {backButton()}
         {createNewUser()}
+        {createNewRelationship()}
       </NavElement>
       <NavElement>
         <h2>{title}</h2>

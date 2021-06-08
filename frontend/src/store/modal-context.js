@@ -2,6 +2,7 @@ import { createContext, useState } from 'react'
 import CreateNewTask from '../components/Modal/CreateNewTask'
 import ChangePassword from '../components/Modal/ChangePassword'
 import CreateNewUser from '../components/Modal/CreateNewUser'
+import CreateNewRelationship from '../components/Modal/CreateNewRelationship'
 
 const ModalContext = createContext()
 
@@ -13,6 +14,7 @@ export function ModalContextProvider(props) {
     createNewTaskHandler: createNewTaskHandler,
     changePasswordHandler: changePasswordHandler,
     createNewUserHandler: createNewUserHandler,
+    createNewRelationship: createNewRelationship,
     onClose: onClose,
     isOpen: isOpen
   }
@@ -29,6 +31,11 @@ export function ModalContextProvider(props) {
 
   function createNewUserHandler() {
     setComponent(<CreateNewUser />)
+    setIsOpen(true)
+  }
+
+  function createNewRelationship() {
+    setComponent(<CreateNewRelationship />)
     setIsOpen(true)
   }
 

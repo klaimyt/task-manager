@@ -13,7 +13,7 @@ const Admin = () => {
 
   useEffect(() => {
     navbarCtx.setTitle("All Users");
-    navbarCtx.setButtons({ logoutButton: true, createNewUser: true });
+    navbarCtx.setButtons({ logoutButton: true, createNewUser: true, createNewRelationship: true });
   }, []);
 
   useEffect(() => {
