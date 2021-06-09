@@ -26,7 +26,7 @@ router.get("/", verifyToken, isAdmin, async (req, res) => {
 
 // Search for employer
 router.get("/qemp", verifyToken, isAdmin, (req, res) => {
-  const query = req.query.name || req.query.username;
+  const query = req.query.q
   User.find({
     $and: [
       { role: ROLE.EMPLOYER },
