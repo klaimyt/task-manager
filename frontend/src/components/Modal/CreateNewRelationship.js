@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import ModalContext from "../../store/modal-context";
 import Button from "../ui/Button";
 import Modal from "./Modal";
@@ -6,11 +6,13 @@ import TextForm from "../ui/TextForm";
 import Select from "../ui/Select";
 import createNewUser from "../../api/createNewUser";
 import Searchbar from "../ui/Searchbar";
+import useEmployerSearch from '../../hooks/useEmployerSearch'
 
 const CreateNewRelationship = () => {
   const modalCtx = useContext(ModalContext);
   const [error, setError] = useState();
-
+  const [query, setQuery] = useState();
+  const { data } = useEmployerSearch(query)
   const nameRef = useRef();
   const userNameRef = useRef();
   const passwordRef = useRef();
@@ -45,11 +47,8 @@ const CreateNewRelationship = () => {
         <Searchbar
           labelText="Employee: "
           autofocus={true}
-          inputRef={repPasswordRef}
-          data={[
-            { name: "James Browny", username: "jamesB123" },
-            { name: "Alex Smith", username: "alexthebest1" },
-          ]}
+          onchange={(e) => {setQuery(e.target.value)}}
+          data={data}
         />
         <TextForm
           inputId="username"

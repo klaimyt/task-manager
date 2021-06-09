@@ -15,6 +15,7 @@ const Searchbar = (props) => {
         labelText={props.labelText}
         autofocus={props.autofocus}
         inputRef={props.inputRef}
+        onchange={props.onchange}
         style={{ margin: "0", width: "auto", backgroundColor: "#fff" }}
       />
       <div className={classes.resBox + isHidden}>
