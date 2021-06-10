@@ -140,7 +140,7 @@ router.get("/relationship", verifyToken, isAdmin, (req, res) => {
 // Create new relationship
 router.post("/relationship", verifyToken, isAdmin, async (req, res) => {
   // Check if exsists
-  var userData;
+  let userData;
   try {
     userData = await UserData.findOne({
       employeeId: req.body.employeeId,
