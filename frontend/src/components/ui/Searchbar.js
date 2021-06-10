@@ -13,7 +13,7 @@ const Searchbar = (props) => {
   function handleDropdownClick(user) {
     textRef.current.value = user.name
     setDropdownIsOpened(false)
-    props.getResult(user);
+    props.getData(user);
   }
 
   function onChangeHandler(e) {

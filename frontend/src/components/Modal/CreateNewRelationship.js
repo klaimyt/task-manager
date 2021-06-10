@@ -3,16 +3,24 @@ import ModalContext from "../../store/modal-context";
 import Button from "../ui/Button";
 import Modal from "./Modal";
 import Searchbar from "../ui/Searchbar";
+import createNewRelationship from "../../api/createNewRelationship";
 
 const CreateNewRelationship = () => {
   const modalCtx = useContext(ModalContext);
   const [error, setError] = useState();
-  const [searchData, setSearchData] = useState({ employer: "", employee: "" });
+  const [newRelationship, setNewRelationship] = useState({
+    employerId: "",
+    employeeId: "",
+  });
 
   function onSubmitHandler(e) {
     e.preventDefault();
 
-    
+    createNewRelationship(newRelationship)
+      .then(() => modalCtx.onClose())
+      .catch((err) => {
+        setError("Ooops... Server error: " + err.response.data.error);
+      });
   }
 
   return (
@@ -20,9 +28,9 @@ const CreateNewRelationship = () => {
       {error && <h3 style={{ color: "#FF6347 " }}>{error}</h3>}
       <form onSubmit={onSubmitHandler}>
         <Searchbar
-          getResult={(e) =>
-            setSearchData((p) => {
-              return { ...p, employer: e._id };
+          getData={(employer) =>
+            setNewRelationship((prevData) => {
+              return { ...prevData, employerId: employer._id };
             })
           }
           labelText="Employer: "
@@ -34,9 +42,9 @@ const CreateNewRelationship = () => {
           inputId="emple-srch"
           labelText="Employee: "
           role="employee"
-          getResult={(e) =>
-            setSearchData((p) => {
-              return { ...p, employee: e._id };
+          getData={(employee) =>
+            setNewRelationship((prevData) => {
+              return { ...prevData, employeeId: employee._id };
             })
           }
         />
