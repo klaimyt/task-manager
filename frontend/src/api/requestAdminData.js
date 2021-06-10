@@ -1,8 +1,8 @@
 import axios from "axios";
 import config from "../config.json";
 
-export default async function requestAdminData() {
-  const response = await axios
+export default function requestAdminData() {
+  return axios
     .get(`${config.API_URL}admin/`, {
       withCredentials: true,
     })
@@ -16,6 +16,4 @@ export default async function requestAdminData() {
       });
       return data;
     });
-
-  return response;
 }
