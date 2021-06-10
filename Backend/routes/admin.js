@@ -146,9 +146,9 @@ router.post("/relationship", verifyToken, isAdmin, async (req, res) => {
       employeeId: req.body.employeeId,
       employerId: req.body.employerId,
     });
-    if (userData) return res.status(409).send();
+    if (userData) return res.status(409).json({error: 'Relationship already exists'});
   } catch (err) {
-    res.status(500).send();
+    res.status(500).json({error: "Internal Server Error"});
   }
   const newRelationship = new UserData({
     employeeId: req.body.employeeId,
