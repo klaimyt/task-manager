@@ -25,11 +25,16 @@ router.get("/", verifyToken, isAdmin, async (req, res) => {
 });
 
 // Search for employer
-router.get("/qemp", verifyToken, isAdmin, (req, res) => {
-  const query = req.query.q
+router.get("/search", verifyToken, isAdmin, (req, res) => {
+  const query = req.query.q;
+  const role = req.query.role;
+  if (!Object.values(ROLE).includes(role)) {
+    return res.status(400).json({ error: "Bad Role" });
+  }
+
   User.find({
     $and: [
-      { role: ROLE.EMPLOYER },
+      { role: role },
       {
         $or: [
           { name: { $regex: query, $options: "i" } },
