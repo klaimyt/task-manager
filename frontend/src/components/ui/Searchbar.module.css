@@ -1,15 +1,18 @@
 .main {
   width: 80%;
   margin: 1rem auto;
+  position: relative;
 }
 
 .resBox {
   position: absolute;
-  width: 79.5%;
+  margin-top: -1px;
+  width: 100%;
   background-color: #ffffff;
   border: 1px solid #e6e6e6;
   box-shadow: 1px 5px 5px rgb(32 33 36 / 18%);;
   border-radius: 0 0 0.5rem 0.5rem;
+  z-index: 10;
 }
 
 .resBox ul {
@@ -21,6 +24,7 @@
 .resBox li {
   padding: 0.3rem;
   text-align: left;
+  cursor: default;
 }
 
 .resBox span {
