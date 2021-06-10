@@ -1,14 +1,10 @@
 const jwt = require('jsonwebtoken')
 
 module.exports = function(req, res, next) {
-    var token
-    try {
-        token = req.headers.authorization.split(' ')[1]
-    } catch (err) {
-        res.status(401).json({error: "You have no auth token"})
-    }
-    
-    if (!token) return res.status(401).json({error: "Access denied"})
+    const accessToken = req.cookies.access_token
+    if (!accessToken) return res.status(401).json({error: "You have no auth token"})
+    const token = accessToken.split(' ')[1]
+    if (!token) return res.status(401).json({error: "Invalid auth token"})
 
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET)

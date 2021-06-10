@@ -1,0 +1,42 @@
+.cell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  margin-bottom: 0.3rem;
+  padding: 0 20px;
+  height: 3rem;
+  border: 1px solid #d1d1d1;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 1rem;
+}
+
+.cell:hover {
+  border-color:#555555
+}
+
+.cell h3 {
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  max-width: 90%;
+}
+
+.cell p {
+    font-weight: 300;
+    font-size: 20px;
+    width: 10%;
+}
+
+a:link {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:visited {
+  text-decoration: none;
+  color: inherit;
+}

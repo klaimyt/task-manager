@@ -1,0 +1,19 @@
+.select {
+  margin: 1rem auto;
+  width: 80%;
+  text-align: left;
+}
+
+.select label {
+  display: block;
+  margin: 0.2rem 0;
+}
+
+.select select {
+  padding: 0 0.5rem;
+  height: 2rem;
+  background: #fcfcfc;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.03);
+}

@@ -18,6 +18,15 @@ router.get('/:userId', verifyToken, canViewPage, async (req, res) => {
     res.send(tasks)
 })
 
+// Get specific task
+router.get('/:userId/:taskId', verifyToken, (req, res) => {
+    Task.findById({_id: req.params.taskId}, (err, task) => {
+        
+        if (err) return res.status(404).send()
+        res.status(200).json(task)
+    })
+})
+
 // Create new task
 router.post('/:userId', verifyToken, (req, res) => {
     // Validate state

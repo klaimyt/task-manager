@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 dotenv.config()
 
@@ -11,7 +12,9 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopo
     .then(() => console.log('MongoDB Connected...'))
     .catch((err) => console.log(err))
 
-server.use(cors())
+
+server.use(cors({ origin: process.env.CLIENT_ORIGIN, credentials: true, methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']}))
+server.use(cookieParser())
 server.use(express.json())
 server.use('/api/auth', require('./routes/auth'))
 server.use('/api/employee', require('./routes/employee'))
