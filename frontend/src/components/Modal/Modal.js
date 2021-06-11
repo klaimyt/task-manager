@@ -4,8 +4,7 @@ import Card from "../ui/Card";
 
 const Modal = (props) => {
   const scrollbarStyle = {
-    overflowY: "scroll",
-    height: "70vh",
+    overflowY: "scroll"
   };
 
   return ReactDom.createPortal(

@@ -6,6 +6,7 @@ const TextForm = (props) => {
     <div className={classes["text-form"]} style={props.style}>
       <label htmlFor={props.inputId}>{props.labelText}</label>
       <input
+        onBlur={props.onblur}
         autoComplete={props.autocomplete}
         onChange={props.onchange}
         autoFocus={props.autofocus}

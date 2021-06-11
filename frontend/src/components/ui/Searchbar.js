@@ -7,17 +7,17 @@ import useEmployerSearch from "../../hooks/useEmployerSearch";
 const Searchbar = (props) => {
   const [dropdownIsOpened, setDropdownIsOpened] = useState(false);
   const [query, setQuery] = useState();
-  const textRef = useRef()
+  const textRef = useRef();
   const { data } = useEmployerSearch(query, props.role);
 
   function handleDropdownClick(user) {
-    textRef.current.value = user.name
-    setDropdownIsOpened(false)
+    textRef.current.value = user.name;
+    setDropdownIsOpened(false);
     props.getData(user);
   }
 
   function onChangeHandler(e) {
-    setDropdownIsOpened(e.target.value.length > 0);
+    setDropdownIsOpened(e.target.value.length > 0 && data.length > 0);
     setQuery(e.target.value);
   }
 
@@ -41,9 +41,10 @@ const Searchbar = (props) => {
   }
 
   return (
-    <div className={classes.main}>
+    <div className={classes.main + " " + (dropdownIsOpened && classes.opened)}>
       <TextForm
-        autocomplete={'off'}
+        onblur={() => setDropdownIsOpened(false)}
+        autocomplete={"off"}
         inputId={props.inputId}
         inputType="text"
         labelText={props.labelText}
