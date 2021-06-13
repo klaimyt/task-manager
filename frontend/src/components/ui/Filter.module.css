@@ -1,0 +1,25 @@
+.main * {
+  font-size: 25px;
+}
+
+.main h3 {
+  cursor: default;
+  font-weight: 400;
+}
+
+.filterList {
+  padding-left: 1em;
+  list-style: none;
+}
+
+.filterList span {
+  cursor: pointer;
+}
+
+.filterList span:hover {
+  color: #00a2ff;
+}
+
+.selected {
+  list-style: disc;
+}

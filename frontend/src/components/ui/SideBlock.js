@@ -7,6 +7,8 @@ const SideBlock = ({ children, ...rest }) => {
       style={{
         display: "flex",
         flexBasis: "0px",
+        margin: '0 1em',
+        flexDirection: 'column',
         flexGrow: "1",
         justifyContent: "start",
       }}
