@@ -51,8 +51,8 @@ const Admin = () => {
 
   function createRightComponent() {
     const sortItems = [
-      { text: "Role", selected: true },
-      { text: "Name", selected: false },
+      { text: "Role", sortMethodName: 'role' },
+      { text: "Name", sortMethodName: 'alphabetical' },
     ];
     return (
       <SortBox

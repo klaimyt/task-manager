@@ -6,12 +6,14 @@ import config from "../config.json";
 import NavbarContext from "../store/navbar-context";
 import requestEmployeeData from "../api/requestEmployeeData";
 import ModalContext from "../store/modal-context";
+import SortBox from "../components/ui/SortBox";
 
 const Employee = () => {
   const navbarCtx = useContext(NavbarContext);
   const { isOpen } = useContext(ModalContext);
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState();
+  const [error, setError] = useState();
+  const [sortMethod, setSortMethod] = useState();
   const { employeeId } = useParams();
   const history = useHistory();
   const states = ["To do", "In progress", "Done", "Finished"];
@@ -42,14 +44,21 @@ const Employee = () => {
     }
   }, []);
 
+  // TODO: Fix initial sort
+  useEffect(() => {
+    if (data && sortMethod) sortMethod(setData);
+  }, [sortMethod]);
+
   useEffect(() => {
     if (isOpen) return;
     const res = requestEmployeeData(employeeId);
-    res.then(data => {
-        setData(data)
-    }).catch(err => {
-      setError(err.response.data)
-    })
+    res
+      .then((data) => {
+        setData(data);
+      })
+      .catch((err) => {
+        setError(err.response.data);
+      });
   }, [isOpen]);
 
   function getNextState(taskId) {
@@ -89,11 +98,26 @@ const Employee = () => {
       });
   }
 
+  function createSortBox() {
+    const sortItems = [
+      { text: "Creation Date", sortMethodName: "creationDate" },
+      { text: "Alphabetical A-z", sortMethodName: "alphabetical" },
+    ];
+    return (
+      <SortBox
+        header="Sort By:"
+        items={sortItems}
+        setSortMethod={setSortMethod}
+      />
+    );
+  }
+
   return (
     <Dashboard
-      data={data || [{text: error, id: 'err'}]}
+      data={data || [{ text: error, id: "err" }]}
       action={cellClicked}
       secondaryAction={secondaryButtonClicked}
+      right={createSortBox()}
     />
   );
 };

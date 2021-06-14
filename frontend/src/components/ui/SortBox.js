@@ -2,27 +2,29 @@ import React, { useEffect, useState } from "react";
 import classes from "./SortBox.module.css";
 
 const SortBox = ({ header, items, setSortMethod }) => {
-  const [selectedSortText, setSelectedSortText] = useState()
+  const [selectedSortText, setSelectedSortText] = useState();
 
-  const funcToItem = (sortText) => {
-    setSelectedSortText(sortText)
+  const funcToItem = (sortMethodName) => {
+    setSelectedSortText(sortMethodName);
     // Get sort method for item's text
-    switch (sortText) {
-      case "Role":
-        return setSortMethod(() => sortByRole)
-      case "Name":
-        return setSortMethod(() => sortByName)
+    switch (sortMethodName) {
+      case "role":
+        return setSortMethod(() => sortByRole);
+      case "alphabetical":
+        return setSortMethod(() => sortByName);
+      case "creationDate":
+        return setSortMethod(() => sortByCreationDate)
       case "":
         break;
     }
-  }
+  };
 
   // Set default sort method
   useEffect(() => {
-    if (!items) return
-    setSortMethod(funcToItem(items[0].text))
-  },[])
-  
+    if (!items) return;
+    setSortMethod(funcToItem(items[0].sortMethodName));
+  }, []);
+
   // Sort functions
   const sortByRole = (setData) => {
     setData((prevData) => {
@@ -36,7 +38,7 @@ const SortBox = ({ header, items, setSortMethod }) => {
         })
         .slice();
     });
-  }
+  };
 
   const sortByName = (setData) => {
     setData((prevData) => {
@@ -48,14 +50,23 @@ const SortBox = ({ header, items, setSortMethod }) => {
         })
         .slice();
     });
-  }
+  };
+
+  const sortByCreationDate = (setData) => {
+    setData((prevData) => {
+      return prevData.sort((a, b) => {
+        return Date.parse(a.date) - Date.parse(b.date)
+      }).slice();
+    });
+  };
 
   // Handlers
   function sortHandler(e) {
     // Get text from clicked span
     const sortText = e.target.outerText;
+    const [item] = items.filter(item => item.text === sortText) 
     // Return sort function
-    funcToItem(sortText)
+    funcToItem(item.sortMethodName);
   }
 
   return (
@@ -67,7 +78,9 @@ const SortBox = ({ header, items, setSortMethod }) => {
             return (
               <li
                 key={item.text}
-                className={item.text === selectedSortText ? classes.selected : undefined }
+                className={
+                  item.sortMethodName === selectedSortText ? classes.selected : undefined
+                }
               >
                 <span onClick={sortHandler}>{item.text}</span>
               </li>
