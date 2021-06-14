@@ -12,7 +12,11 @@ const userDataSchema = mongoose.Schema({
     tasks: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Task'
-    }]
+    }],
+    creatingDate: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 const UserData = mongoose.model('UserData', userDataSchema)
