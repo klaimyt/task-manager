@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import TextForm from "./TextForm";
 
 import classes from "./Searchbar.module.css";
@@ -43,7 +43,6 @@ const Searchbar = (props) => {
   return (
     <div className={classes.main + " " + (dropdownIsOpened && classes.opened)}>
       <TextForm
-        onblur={() => setDropdownIsOpened(false)}
         autocomplete={"off"}
         inputId={props.inputId}
         inputType="text"
