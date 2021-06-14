@@ -11,6 +11,7 @@ export default function requestEmployeeData(employerId) {
         return {
           text: rel.employeeId.name,
           secondaryText: "Tasks: " + rel.tasks.length,
+          date: rel.creatingDate,
           id: rel.employeeId._id,
         };
       });
