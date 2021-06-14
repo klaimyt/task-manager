@@ -7,16 +7,16 @@
   font-weight: 400;
 }
 
-.filterList {
+.sortList {
   padding-left: 1em;
   list-style: none;
 }
 
-.filterList span {
+.sortList span {
   cursor: pointer;
 }
 
-.filterList span:hover {
+.sortList span:hover {
   color: #00a2ff;
 }
 

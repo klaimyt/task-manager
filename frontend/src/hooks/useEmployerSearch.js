@@ -18,7 +18,7 @@ export default function useEmployerSearch(query, role) {
       .then((res) => setData(res.data))
       .catch((err) => {
         if (axios.isCancel(err)) return;
-        // setError(err);
+        setError(err);
       });
     return () => cancel();
   }, [query]);
