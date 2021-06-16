@@ -42,7 +42,7 @@ const Employer = () => {
 
   function clickHandler(cell) {
     // Will not click if cell has speciall id (0, err)
-    if (cell.id === '0' || 'err') return
+    if (cell.id === '0' || cell.id === 'err') return
     history.push(`/employee/${cell.id}`);
   }
 

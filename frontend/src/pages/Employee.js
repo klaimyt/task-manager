@@ -56,8 +56,12 @@ const Employee = () => {
     const res = requestEmployeeData(employeeId);
     res
       .then((employeeData) => {
-        setViewData(employeeData);
-        setData(employeeData)
+        if (employeeData.length > 0) {
+          setViewData(employeeData);
+          setData(employeeData)
+        } else {
+          setViewData([{text: "You have no tasks", id: '0'}])
+        }
       })
       .catch((err) => {
         setError(err.response.data);
@@ -77,6 +81,8 @@ const Employee = () => {
   }
 
   function cellClicked(cell) {
+    // Will not click if cell has speciall id (0, err)
+    if (cell.id === '0' || cell.id === 'err') return
     history.push(`/employee/${employeeId}/${cell.id}`);
   }
 
@@ -119,6 +125,7 @@ const Employee = () => {
 
   function createFilterBox() {
     function changeStateHandler(e) {
+      if (!Array.isArray(data)) return
       const choosenState = e.target.value
 
       if (choosenState === 'All') {
