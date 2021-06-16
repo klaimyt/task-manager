@@ -18,21 +18,30 @@ const Dashboard = (props) => {
   return (
     <Content>
       <SideBlock>{props.left}</SideBlock>
-      <ul style={{ listStyle: "none", flexGrow: "2" }}>
-        {props.data.map((task) => {
-          return (
-            <Cell
-              key={task.id}
-              id={task.id}
-              text={task.text}
-              button={task.state ? [task.state, props.secondaryAction] : null}
-              secondaryText={task.secondaryText}
-              onClick={() => {
-                props.action(task)}}
-            />
-          );
-        })}
-      </ul>
+      <div
+        style={{
+          display: "flex",
+          flexBasis: "0",
+          flexGrow: "3",
+        }}
+      >
+        <ul style={{ listStyle: "none", width: "100%" }}>
+          {props.data.map((task) => {
+            return (
+              <Cell
+                key={task.id}
+                id={task.id}
+                text={task.text}
+                button={task.state ? [task.state, props.secondaryAction] : null}
+                secondaryText={task.secondaryText}
+                onClick={() => {
+                  props.action(task);
+                }}
+              />
+            );
+          })}
+        </ul>
+      </div>
       <SideBlock>{props.right}</SideBlock>
     </Content>
   );

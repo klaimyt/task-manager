@@ -6,6 +6,7 @@ button {
   cursor: pointer;
   text-transform: uppercase;
   transition: transform 300ms ease-out;
+  white-space: nowrap;
 }
 
 button:hover {

@@ -22,13 +22,12 @@
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
-  max-width: 90%;
 }
 
 .cell p {
     font-weight: 300;
     font-size: 20px;
-    width: 10%;
+    white-space: nowrap;
 }
 
 a:link {
