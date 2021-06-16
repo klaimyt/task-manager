@@ -55,7 +55,7 @@ const SortBox = ({ header, items, setSortMethod, ...rest }) => {
   const sortByCreationDate = (setData) => {
     setData((prevData) => {
       return prevData.sort((a, b) => {
-        return Date.parse(a.date) - Date.parse(b.date)
+        return Date.parse(b.date) - Date.parse(a.date)
       }).slice();
     });
   };
