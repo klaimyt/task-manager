@@ -7,11 +7,13 @@ import NavbarContext from "../store/navbar-context";
 import requestEmployeeData from "../api/requestEmployeeData";
 import ModalContext from "../store/modal-context";
 import SortBox from "../components/ui/SortBox";
+import Select from "../components/ui/Select";
 
 const Employee = () => {
   const navbarCtx = useContext(NavbarContext);
   const { isOpen } = useContext(ModalContext);
   const [data, setData] = useState();
+  const [viewData, setViewData] = useState();
   const [error, setError] = useState();
   const [sortMethod, setSortMethod] = useState();
   const { employeeId } = useParams();
@@ -46,15 +48,16 @@ const Employee = () => {
 
   // TODO: Fix initial sort
   useEffect(() => {
-    if (data && sortMethod) sortMethod(setData);
+    if (viewData && sortMethod) sortMethod(setViewData);
   }, [sortMethod]);
 
   useEffect(() => {
     if (isOpen) return;
     const res = requestEmployeeData(employeeId);
     res
-      .then((data) => {
-        setData(data);
+      .then((employeeData) => {
+        setViewData(employeeData);
+        setData(employeeData)
       })
       .catch((err) => {
         setError(err.response.data);
@@ -62,7 +65,7 @@ const Employee = () => {
   }, [isOpen]);
 
   function getNextState(taskId) {
-    const [task] = data.filter((task) => task.id === taskId);
+    const [task] = viewData.filter((task) => task.id === taskId);
     const currentStateIndex = states.indexOf(task.state);
     if (role === "employee") {
       if (currentStateIndex === 2) return states[1];
@@ -88,7 +91,7 @@ const Employee = () => {
       )
       .then((res) => {
         if (res.status === 200) {
-          setData((prevData) => {
+          setViewData((prevData) => {
             return prevData.map((task) => {
               if (task.id === taskId) task.state = state;
               return task;
@@ -98,6 +101,7 @@ const Employee = () => {
       });
   }
 
+  // Right components
   function createSortBox() {
     const sortItems = [
       { text: "Creation Date", sortMethodName: "creationDate" },
@@ -105,6 +109,7 @@ const Employee = () => {
     ];
     return (
       <SortBox
+        style={{ margin: "0 auto", textAlign: "left", width: "80%" }}
         header="Sort By:"
         items={sortItems}
         setSortMethod={setSortMethod}
@@ -112,12 +117,43 @@ const Employee = () => {
     );
   }
 
+  function createFilterBox() {
+    function changeStateHandler(e) {
+      const choosenState = e.target.value
+
+      if (choosenState === 'All') {
+        setViewData(data)
+      } else {
+        setViewData(data.filter(task => task.state === choosenState))
+      }
+    }
+
+    return (
+      <Select
+        onChange={changeStateHandler}
+        inputId="state"
+        labelText="Filter By: "
+      >
+        <option value="All">All</option>
+        <option value="To do">To do</option>
+        <option value="In progress">In Progress</option>
+        <option value="Done">Done</option>
+        <option value="Finished">Finished</option>
+      </Select>
+    );
+  }
+
   return (
     <Dashboard
-      data={data || [{ text: error, id: "err" }]}
+      data={viewData || [{ text: error, id: "err" }]}
       action={cellClicked}
       secondaryAction={secondaryButtonClicked}
-      right={createSortBox()}
+      right={
+        <>
+          {createSortBox()}
+          {createFilterBox()}
+        </>
+      }
     />
   );
 };

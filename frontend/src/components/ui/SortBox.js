@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./SortBox.module.css";
 
-const SortBox = ({ header, items, setSortMethod }) => {
+const SortBox = ({ header, items, setSortMethod, ...rest }) => {
   const [selectedSortText, setSelectedSortText] = useState();
 
   const funcToItem = (sortMethodName) => {
@@ -70,7 +70,7 @@ const SortBox = ({ header, items, setSortMethod }) => {
   }
 
   return (
-    <div className={classes.main}>
+    <div {...rest} className={classes.main}>
       <h3>{header}</h3>
       <ul className={classes.sortList}>
         {items &&
