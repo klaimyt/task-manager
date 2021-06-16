@@ -18,9 +18,10 @@ const Modal = (props) => {
           margin: "0",
           width: "50%",
           maxWidth: "50%",
+          overflowY: 'scroll'
         }}
       >
-        <div style={scrollbarStyle}>{props.children}</div>
+        {props.children}
       </Card>
       <Backdrop onClick={props.onClose} />
     </>,

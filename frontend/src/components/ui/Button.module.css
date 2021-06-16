@@ -19,8 +19,10 @@ button:active {
 }
 
 .btn-long {
-  padding: 0.3rem 4rem;
-  font-size: 24;
+  width: 30%;
+  min-width: fit-content;
+  max-width: 400px;
+  font-size: 24px;
   background: #4f4f4f;
   color: #fff;
 }
