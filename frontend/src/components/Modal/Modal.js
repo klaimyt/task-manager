@@ -3,28 +3,19 @@ import Backdrop from "../ui/Backdrop";
 import Card from "../ui/Card";
 
 const Modal = (props) => {
-  const scrollbarStyle = {
-    overflowY: "scroll"
-  };
+  const style = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh'
+  }
 
   return ReactDom.createPortal(
-    <>
-      <Card
-        style={{
-          zIndex: 100,
-          position: "fixed",
-          left: "25%",
-          top: "3rem",
-          margin: "0",
-          width: "50%",
-          maxWidth: "50%",
-          overflowY: 'scroll'
-        }}
-      >
-        {props.children}
-      </Card>
+    <div style={style}>
+      <Card>{props.children}</Card>
       <Backdrop onClick={props.onClose} />
-    </>,
+    </div>,
     document.getElementById("modal")
   );
 };
