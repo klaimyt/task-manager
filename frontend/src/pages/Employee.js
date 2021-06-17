@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import Dashboard from "../components/ui/Dashboard";
 import { useParams, useHistory } from "react-router-dom";
-import config from "../config.json";
 import NavbarContext from "../store/navbar-context";
 import requestEmployeeData from "../api/requestEmployeeData";
 import ModalContext from "../store/modal-context";
 import SortBox from "../components/ui/SortBox";
 import Select from "../components/ui/Select";
+import patchTask from "../api/patchTask";
 
 const Employee = () => {
   const navbarCtx = useContext(NavbarContext);
@@ -58,9 +57,9 @@ const Employee = () => {
       .then((employeeData) => {
         if (employeeData.length > 0) {
           setViewData(employeeData);
-          setData(employeeData)
+          setData(employeeData);
         } else {
-          setViewData([{text: "You have no tasks", id: '0'}])
+          setViewData([{ text: "You have no tasks", id: "0" }]);
         }
       })
       .catch((err) => {
@@ -82,29 +81,21 @@ const Employee = () => {
 
   function cellClicked(cell) {
     // Will not click if cell has speciall id (0, err)
-    if (cell.id === '0' || cell.id === 'err') return
+    if (cell.id === "0" || cell.id === "err") return;
     history.push(`/employee/${employeeId}/${cell.id}`);
   }
 
   function secondaryButtonClicked(taskId) {
     const state = getNextState(taskId);
     if (!state) return;
-    axios
-      .patch(
-        `${config.API_URL}employee/${employeeId}/${taskId}`,
-        { state: state },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        if (res.status === 200) {
-          setViewData((prevData) => {
-            return prevData.map((task) => {
-              if (task.id === taskId) task.state = state;
-              return task;
-            });
-          });
-        }
+    patchTask(employeeId, taskId, state).then(() => {
+      setViewData((prevData) => {
+        return prevData.map((task) => {
+          if (task.id === taskId) task.state = state;
+          return task;
+        });
       });
+    });
   }
 
   // Right components
@@ -125,13 +116,13 @@ const Employee = () => {
 
   function createFilterBox() {
     function changeStateHandler(e) {
-      if (!Array.isArray(data)) return
-      const choosenState = e.target.value
+      if (!Array.isArray(data)) return;
+      const choosenState = e.target.value;
 
-      if (choosenState === 'All') {
-        setViewData(data)
+      if (choosenState === "All") {
+        setViewData(data);
       } else {
-        setViewData(data.filter(task => task.state === choosenState))
+        setViewData(data.filter((task) => task.state === choosenState));
       }
     }
 
