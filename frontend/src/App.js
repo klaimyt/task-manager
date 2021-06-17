@@ -1,6 +1,7 @@
 import "./App.css";
 import React from 'react'
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import axios from "axios";
 // Routes
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -13,10 +14,21 @@ import { NavbarContextProvider } from './store/navbar-context'
 import { ModalContextProvider } from './store/modal-context'
 
 function App() {
+  const history = useHistory()
+
   function checkAuth() {
       const user = localStorage.getItem('username')
       return user ? true : false 
   }
+
+  // Check Authentication. (401 response) 
+  axios.interceptors.response.use(null, (e) => {
+    if (e.response.status === 401) {
+      localStorage.clear()
+      history.push('/login')
+    }
+    return Promise.reject(e);
+  })
 
   function redirect() {
     const userId = localStorage.getItem('id')
