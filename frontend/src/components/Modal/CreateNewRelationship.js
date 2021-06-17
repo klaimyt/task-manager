@@ -4,10 +4,12 @@ import Button from "../ui/Button";
 import Modal from "./Modal";
 import Searchbar from "../ui/Searchbar";
 import createNewRelationship from "../../api/createNewRelationship";
+import Loading from 'react-spinner-material'
 
 const CreateNewRelationship = () => {
   const modalCtx = useContext(ModalContext);
   const [error, setError] = useState();
+  const [isSubmited, setIsSubmited] = useState(false);
   const [newRelationship, setNewRelationship] = useState({
     employerId: "",
     employeeId: "",
@@ -15,12 +17,14 @@ const CreateNewRelationship = () => {
 
   function onSubmitHandler(e) {
     e.preventDefault();
+    if (isSubmited) return;
 
     createNewRelationship(newRelationship)
       .then(() => modalCtx.onClose())
       .catch((err) => {
         setError("Ooops... Server error: " + err.response.data.error);
       });
+    setIsSubmited(true);
   }
 
   return (
@@ -48,7 +52,7 @@ const CreateNewRelationship = () => {
             })
           }
         />
-        <Button isLong={true} text="Create" />
+        {isSubmited ? <Loading /> : <Button isLong={true} text="Create" />}
         <Button text="Cancel" onClick={modalCtx.onClose} />
       </form>
     </Modal>

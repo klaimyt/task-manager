@@ -5,10 +5,12 @@ import Modal from "./Modal";
 import TextForm from "../ui/TextForm";
 import Select from "../ui/Select";
 import createNewUser from "../../api/createNewUser";
+import Loading from 'react-spinner-material'
 
 const CreateNewUser = () => {
   const modalCtx = useContext(ModalContext);
   const [error, setError] = useState();
+  const [isSubmited, setIsSubmited] = useState(false);
 
   const nameRef = useRef();
   const userNameRef = useRef();
@@ -18,6 +20,8 @@ const CreateNewUser = () => {
 
   function onSubmitHandler(e) {
     e.preventDefault();
+    if (isSubmited) return;
+
     const nameText = nameRef.current.value;
     const userNameText = userNameRef.current.value;
     const passwordText = passwordRef.current.value;
@@ -36,6 +40,7 @@ const CreateNewUser = () => {
         .catch((err) => {
           setError("Ooops... Server error: " + err.response.data.error);
         });
+      setIsSubmited(true);
     } else {
       setError("Password not match");
     }
@@ -78,7 +83,7 @@ const CreateNewUser = () => {
           inputRef={repPasswordRef}
           minLength={8}
         />
-        <Button isLong={true} text="Create" />
+        {isSubmited ? <Loading /> : <Button isLong={true} text="Create" />}
         <Button text="Cancel" onClick={modalCtx.onClose} />
       </form>
     </Modal>
