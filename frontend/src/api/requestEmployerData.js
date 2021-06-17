@@ -15,6 +15,6 @@ export default function requestEmployeeData(employerId) {
           id: rel.employeeId._id,
         };
       });
-      return employees;
+      return employees.length > 0 ? employees : [{text: "You have no employees", id: '0'}]
     });
 }

@@ -1,46 +1,30 @@
-import axios from "axios";
 import { React, useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Content from "../components/ui/Content";
 import MainBlock from "../components/ui/MainBlock";
 import SideBlock from "../components/ui/SideBlock";
-import config from "../config.json";
 import Loading from "react-spinner-material";
 import NavbarContext from "../store/navbar-context";
+import requsetTask from "../api/requestTask";
 
 const Task = () => {
   const [data, setData] = useState(null);
   const { employeeId, taskId } = useParams();
-  const navbarCtx = useContext(NavbarContext)
+  const navbarCtx = useContext(NavbarContext);
 
   useEffect(() => {
-    requsetTask();
-    navbarCtx.setTitle('Task')
+    requsetTask(employeeId, taskId)
+      .then((task) => {
+        setData(task);
+      })
+      .catch((err) => setData(err));
+
+    navbarCtx.setTitle("Task");
     navbarCtx.setButtons({
       backButton: true,
-      logoutButton: true
-    })
+      logoutButton: true,
+    });
   }, []);
-
-  function requsetTask() {
-    axios
-      .get(`${config.API_URL}employee/${employeeId}/${taskId}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        setData({
-          text: res.data.text,
-          state: res.data.state,
-          createDate: res.data.creatingDate,
-          updateDate: res.data.updatedDate,
-        });
-      })
-      .catch((err) => {
-        setData({
-          text: "Error: " + err.response.status + " " + err.response.statusText,
-        });
-      });
-  }
 
   if (!data) {
     return (

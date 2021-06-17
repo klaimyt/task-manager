@@ -1,41 +1,29 @@
-import React from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
+import { Redirect, useHistory } from "react-router-dom";
 import Card from "../components/ui/Card";
 import TextForm from "../components/ui/TextForm";
-import axios from "axios";
-import { useRef, useState, useContext, useEffect } from "react";
-import { Redirect, useHistory } from "react-router-dom";
-import Button from '../components/ui/Button'
-import NavbarContext from '../store/navbar-context'
+import Button from "../components/ui/Button";
+import NavbarContext from "../store/navbar-context";
+import requestLogin from "../api/requestLogin";
 
 const Login = () => {
-  const usernameRef = useRef(null);
-  const passwordRef = useRef(null);
-  const [error, setError] = useState(null);
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+  const [error, setError] = useState();
   const history = useHistory();
-  const navbarCtx = useContext(NavbarContext)
+  const navbarCtx = useContext(NavbarContext);
 
   useEffect(() => {
-    navbarCtx.setTitle('Tasks Manager')
-  }, [])
+    navbarCtx.setTitle("Tasks Manager");
+  }, []);
 
   function submitHandler(event) {
     event.preventDefault();
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
 
-    const userData = {
-      username: username,
-      password: password,
-    };
-
-    sendRequest(userData)
-      .then((res) => {
-        localStorage.setItem("name", res.data.name);
-        localStorage.setItem("username", res.data.username);
-        localStorage.setItem("role", res.data.role);
-        localStorage.setItem("id", res.data.id);
-        history.push("/");
-      })
+    requestLogin(username, password)
+      .then(() => history.push("/"))
       .catch((err) => {
         if (err.response === undefined) {
           setError("Server unvailable");
@@ -45,15 +33,9 @@ const Login = () => {
       });
   }
 
-  function sendRequest(userData) {
-    return axios.post("http://localhost:5000/api/auth/login", userData, {
-      withCredentials: true,
-    });
-  }
-
   // If user already logged in
-  if (localStorage.getItem('name')) {
-    return <Redirect to='/' />
+  if (localStorage.getItem("name")) {
+    return <Redirect to="/" />;
   }
 
   return (
@@ -79,7 +61,7 @@ const Login = () => {
           minLength={8}
           inputRef={passwordRef}
         />
-        <Button isLong={true} style={{marginTop: '2rem'}} text="sign in"/>
+        <Button isLong={true} style={{ marginTop: "2rem" }} text="sign in" />
       </form>
     </Card>
   );

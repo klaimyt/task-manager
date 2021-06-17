@@ -59,7 +59,7 @@ const Employee = () => {
         setData(employeeData);
       })
       .catch((err) => {
-        setError(err.response.data);
+        setError(err.response.data.error);
       });
   }, [isOpen]);
 
