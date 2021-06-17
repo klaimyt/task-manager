@@ -17,8 +17,7 @@ const CreateNewTask = () => {
     const currentPath = location.pathname
     const employeeId = currentPath.split('/')
 
-    createTask(employeeId[employeeId.length - 1], taskText)
-    modalCtx.onClose()
+    createTask(employeeId[employeeId.length - 1], taskText).then(() => modalCtx.onClose())
   }
 
   return (
