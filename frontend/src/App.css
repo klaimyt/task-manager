@@ -35,3 +35,7 @@ a:visited {
   text-decoration: none;
   color: inherit;
 }
+
+.react-spinner-material {
+  margin: auto;
+}
