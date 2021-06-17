@@ -141,7 +141,7 @@ const Employee = () => {
 
   return (
     <Dashboard
-      data={viewData || [{ text: error, id: "err" }]}
+      data={viewData || (error && [{ text: error, id: "err" }])}
       action={cellClicked}
       secondaryAction={secondaryButtonClicked}
       right={

@@ -64,7 +64,7 @@ const Employer = () => {
 
   return (
     <Dashboard
-      data={data || [{ text: error, id: "err" }]}
+      data={data || (error && [{ text: error, id: "err" }])}
       right={createSortBox()}
       action={clickHandler}
     />
