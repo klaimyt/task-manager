@@ -51,16 +51,12 @@ const Employee = () => {
   }, [sortMethod]);
 
   useEffect(() => {
+    // Request new data on modal close
     if (isOpen) return;
-    const res = requestEmployeeData(employeeId);
-    res
+    requestEmployeeData(employeeId)
       .then((employeeData) => {
-        if (employeeData.length > 0) {
-          setViewData(employeeData);
-          setData(employeeData);
-        } else {
-          setViewData([{ text: "You have no tasks", id: "0" }]);
-        }
+        setViewData(employeeData);
+        setData(employeeData);
       })
       .catch((err) => {
         setError(err.response.data);

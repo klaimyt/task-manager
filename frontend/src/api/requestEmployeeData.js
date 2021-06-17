@@ -18,6 +18,6 @@ export default function requestEmployeeData(employeeId) {
         });
       });
 
-      return tasks.flat();
+      return tasks.length > 0 ? tasks.flat() : [{ text: "You have no tasks", id: "0" }]
     });
 }
