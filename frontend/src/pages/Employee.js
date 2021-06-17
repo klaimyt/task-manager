@@ -71,6 +71,8 @@ const Employee = () => {
       // Button should be unclickable on 3 index
       if (currentStateIndex === 3) return null;
     }
+    // Admin can't change task state
+    if (role === 'admin') return null
 
     return states[(currentStateIndex + 1) % 4];
   }
