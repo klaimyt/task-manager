@@ -42,7 +42,7 @@ const ChangePassword = () => {
       <form onSubmit={onSubmitHandler}>
         {error && <h3 style={{ color: "#FF6347 " }}>{error}</h3>}
         <TextForm
-          autofocus="true"
+          autofocus={true}
           inputId="password"
           labelText="New Password: "
           inputType="password"
