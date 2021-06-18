@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import TextForm from "./TextForm";
 
 import classes from "./Searchbar.module.css";

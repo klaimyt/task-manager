@@ -9,7 +9,8 @@ const Modal = (props) => {
     left: 0,
     width: '100vw',
     height: '100vh',
-    zIndex: 15
+    zIndex: 15,
+    overflow: 'auto'
   }
 
   return ReactDom.createPortal(
