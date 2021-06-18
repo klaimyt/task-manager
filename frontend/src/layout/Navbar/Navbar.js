@@ -12,7 +12,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import NavElement from "./NavElement";
 import NavButton from "./NavButton";
 import NavbarContext from "../../store/navbar-context";
-import ModalContext from '../../store/modal-context'
+import ModalContext from '../../store/modal-context';
+import config from '../../config.json'
 
 import classes from "./Navbar.module.css";
 
@@ -27,7 +28,7 @@ const Navbar = () => {
   // Api req
   function handleLogout() {
     axios
-      .delete("http://localhost:5000/api/auth/login", { withCredentials: true })
+      .delete(`${config.API_URL}auth/login`, { withCredentials: true })
       .then(() => {
         // TODO err handl
         localStorage.clear();
