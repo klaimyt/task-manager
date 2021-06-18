@@ -63,7 +63,7 @@ const SortBox = ({ header, items, setSortMethod, ...rest }) => {
   // Handlers
   function sortHandler(e) {
     // Get text from clicked span
-    const sortText = e.target.outerText;
+    const sortText = e.target.innerText;
     const [item] = items.filter(item => item.text === sortText) 
     // Return sort function
     funcToItem(item.sortMethodName);

@@ -7,6 +7,13 @@ import NavbarContext from "../store/navbar-context";
 import requestLogin from "../api/requestLogin";
 
 const Login = () => {
+  const mainDivStyle = {
+    display: "grid",
+    placeItems: "center",
+    width: "100vw",
+    height: "100vh",
+  };
+
   const usernameRef = useRef();
   const passwordRef = useRef();
   const [error, setError] = useState();
@@ -39,31 +46,33 @@ const Login = () => {
   }
 
   return (
-    <Card>
-      {error ? (
-        <h1 style={{ color: "#FF6347", paddingTop: "2rem", margin: "auto" }}>
-          {error}
-        </h1>
-      ) : null}
+    <div style={mainDivStyle}>
+      <Card>
+        {error ? (
+          <h1 style={{ color: "#FF6347", paddingTop: "2rem", margin: "auto" }}>
+            {error}
+          </h1>
+        ) : null}
 
-      <form onSubmit={submitHandler}>
-        <TextForm
-          inputId="username"
-          inputType="text"
-          labelText="Username:"
-          minLength={5}
-          inputRef={usernameRef}
-        />
-        <TextForm
-          inputId="password"
-          inputType="password"
-          labelText="Password:"
-          minLength={8}
-          inputRef={passwordRef}
-        />
-        <Button isLong={true} style={{ marginTop: "2rem" }} text="sign in" />
-      </form>
-    </Card>
+        <form onSubmit={submitHandler}>
+          <TextForm
+            inputId="username"
+            inputType="text"
+            labelText="Username:"
+            minLength={5}
+            inputRef={usernameRef}
+          />
+          <TextForm
+            inputId="password"
+            inputType="password"
+            labelText="Password:"
+            minLength={8}
+            inputRef={passwordRef}
+          />
+          <Button isLong={true} style={{ marginTop: "2rem" }} text="sign in" />
+        </form>
+      </Card>
+    </div>
   );
 };
 

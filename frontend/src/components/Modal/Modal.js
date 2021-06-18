@@ -8,12 +8,15 @@ const Modal = (props) => {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh'
+    height: '100vh',
+    zIndex: 15
   }
 
   return ReactDom.createPortal(
     <div style={style}>
-      <Card>{props.children}</Card>
+      <div style={{display: 'grid', placeItems: 'center', width: '100%', height: '100%'}}>
+        <Card>{props.children}</Card>
+      </div>
       <Backdrop onClick={props.onClose} />
     </div>,
     document.getElementById("modal")
