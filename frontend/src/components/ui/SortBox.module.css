@@ -8,12 +8,14 @@
 }
 
 .sortList {
+  margin-top: 0.3em ;
   padding-left: 1em;
   list-style: none;
 }
 
 .sortList span {
   cursor: pointer;
+  font-weight: 300;
 }
 
 .sortList span:hover {
