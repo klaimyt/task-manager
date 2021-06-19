@@ -11,10 +11,11 @@ import patchTask from "../api/patchTask";
 const Employee = () => {
   const navbarCtx = useContext(NavbarContext);
   const { isOpen } = useContext(ModalContext);
-  const [data, setData] = useState();
+  const [dataBuffer, setDataBuffer] = useState();
   const [viewData, setViewData] = useState();
   const [error, setError] = useState();
   const [sortMethod, setSortMethod] = useState();
+  const [filter, setFilter] = useState('All');
   const { employeeId } = useParams();
   const history = useHistory();
   const states = ["To do", "In progress", "Done", "Finished"];
@@ -45,18 +46,29 @@ const Employee = () => {
     }
   }, []);
 
-  // TODO: Fix initial sort
   useEffect(() => {
-    if (viewData && sortMethod) sortMethod(setViewData);
+    if (dataBuffer && sortMethod) sortMethod(setDataBuffer);
   }, [sortMethod]);
+
+  useEffect(() => {
+    if (!dataBuffer) return
+    if (filter === "All") {
+      setViewData(dataBuffer);
+    } else {
+      setViewData(dataBuffer.filter((task) => task.state === filter));
+    }
+  }, [dataBuffer, filter]);
 
   useEffect(() => {
     // Request new data on modal close
     if (isOpen) return;
     requestEmployeeData(employeeId)
       .then((employeeData) => {
-        setViewData(employeeData);
-        setData(employeeData);
+        if (sortMethod) {
+          sortMethod(setDataBuffer, employeeData);
+        } else {
+          setDataBuffer(employeeData);
+        }
       })
       .catch((err) => {
         setError(err.response.data.error);
@@ -72,7 +84,7 @@ const Employee = () => {
       if (currentStateIndex === 3) return null;
     }
     // Admin can't change task state
-    if (role === 'admin') return null
+    if (role === "admin") return null;
 
     return states[(currentStateIndex + 1) % 4];
   }
@@ -114,14 +126,9 @@ const Employee = () => {
 
   function createFilterBox() {
     function changeStateHandler(e) {
-      if (!Array.isArray(data)) return;
+      if (!Array.isArray(dataBuffer)) return;
       const choosenState = e.target.value;
-
-      if (choosenState === "All") {
-        setViewData(data);
-      } else {
-        setViewData(data.filter((task) => task.state === choosenState));
-      }
+      setFilter(choosenState);
     }
 
     return (

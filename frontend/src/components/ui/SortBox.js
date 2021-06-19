@@ -13,7 +13,7 @@ const SortBox = ({ header, items, setSortMethod, ...rest }) => {
       case "alphabetical":
         return setSortMethod(() => sortByName);
       case "creationDate":
-        return setSortMethod(() => sortByCreationDate)
+        return setSortMethod(() => sortByCreationDate);
       case "":
         break;
     }
@@ -22,49 +22,64 @@ const SortBox = ({ header, items, setSortMethod, ...rest }) => {
   // Set default sort method
   useEffect(() => {
     if (!items) return;
-    setSortMethod(funcToItem(items[0].sortMethodName));
+    funcToItem(items[0].sortMethodName);
   }, []);
 
   // Sort functions
-  const sortByRole = (setData) => {
-    setData((prevData) => {
-      return prevData
-        .sort((a, b) => {
-          if (a.secondaryText.toLowerCase() === b.secondaryText.toLowerCase())
-            return 0;
-          return a.secondaryText.toLowerCase() < b.secondaryText.toLowerCase()
-            ? -1
-            : 1;
-        })
-        .slice();
-    });
+  const sortByRole = (setData, newData) => {
+    const compareFunction = (a, b) => {
+      if (a.secondaryText.toLowerCase() === b.secondaryText.toLowerCase())
+        return 0;
+      return a.secondaryText.toLowerCase() < b.secondaryText.toLowerCase()
+        ? -1
+        : 1;
+    };
+
+    if (newData) {
+      const sortedNewData = newData.sort(compareFunction);
+      setData(sortedNewData);
+    } else {
+      setData((prevData) => {
+        return prevData.sort(compareFunction).slice();
+      });
+    }
   };
 
-  const sortByName = (setData) => {
-    setData((prevData) => {
-      return prevData
-        .sort((a, b) => {
-          if (a.text.toLowerCase() < b.text.toLowerCase()) return -1;
-          if (a.text.toLowerCase() > b.text.toLowerCase()) return 1;
-          return 0;
-        })
-        .slice();
-    });
+  const sortByName = (setData, newData) => {
+    const compareFunction = (a, b) => {
+      if (a.text.toLowerCase() < b.text.toLowerCase()) return -1;
+      if (a.text.toLowerCase() > b.text.toLowerCase()) return 1;
+      return 0;
+    };
+
+    if (newData) {
+      const sortedNewData = newData.sort(compareFunction);
+      setData(sortedNewData);
+    } else {
+      setData((prevData) => {
+        return prevData.sort(compareFunction).slice();
+      });
+    }
   };
 
-  const sortByCreationDate = (setData) => {
-    setData((prevData) => {
-      return prevData.sort((a, b) => {
-        return Date.parse(b.date) - Date.parse(a.date)
-      }).slice();
-    });
+  const sortByCreationDate = (setData, newData) => {
+    const compareFunction = (a, b) => Date.parse(b.date) - Date.parse(a.date);
+
+    if (newData) {
+      const sortedNewData = newData.sort(compareFunction);
+      setData(sortedNewData);
+    } else {
+      setData((prevData) => {
+        return prevData.sort(compareFunction).slice();
+      });
+    }
   };
 
   // Handlers
   function sortHandler(e) {
     // Get text from clicked span
     const sortText = e.target.innerText;
-    const [item] = items.filter(item => item.text === sortText) 
+    const [item] = items.filter((item) => item.text === sortText);
     // Return sort function
     funcToItem(item.sortMethodName);
   }
@@ -79,7 +94,9 @@ const SortBox = ({ header, items, setSortMethod, ...rest }) => {
               <li
                 key={item.text}
                 className={
-                  item.sortMethodName === selectedSortText ? classes.selected : undefined
+                  item.sortMethodName === selectedSortText
+                    ? classes.selected
+                    : undefined
                 }
               >
                 <span onClick={sortHandler}>{item.text}</span>

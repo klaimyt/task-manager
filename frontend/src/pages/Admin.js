@@ -24,13 +24,16 @@ const Admin = () => {
 
   useEffect(() => {
     if (!isOpen) {
-      requestAdminData().then((data) => {
-        setData(data);
+      requestAdminData().then((resData) => {
+        if (sortMethod) {
+          sortMethod(setData, resData);
+        } else {
+          setData(resData);
+        }
       });
     }
   }, [isOpen]);
 
-  // TODO: Fix initial sort
   useEffect(() => {
     if (data && sortMethod) sortMethod(setData);
   }, [sortMethod]);
@@ -51,8 +54,8 @@ const Admin = () => {
 
   function createRightComponent() {
     const sortItems = [
-      { text: "Role", sortMethodName: 'role' },
-      { text: "Name", sortMethodName: 'alphabetical' },
+      { text: "Role", sortMethodName: "role" },
+      { text: "Name", sortMethodName: "alphabetical" },
     ];
     return (
       <SortBox

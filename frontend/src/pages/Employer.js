@@ -37,7 +37,6 @@ const Employer = () => {
       });
   }, []);
 
-  // TODO: Fix initial sort
   useEffect(() => {
     if (data && sortMethod) sortMethod(setData);
   }, [sortMethod]);
