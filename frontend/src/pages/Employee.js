@@ -28,6 +28,7 @@ const Employee = () => {
         navbarCtx.setButtons({
           backButton: true,
           logoutButton: true,
+          changePasswordButton: true,
         });
         return;
       case "employer":
