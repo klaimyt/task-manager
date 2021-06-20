@@ -12,6 +12,7 @@ import Employer from './pages/Employer'
 import Employee from './pages/Employee'
 import { NavbarContextProvider } from './store/navbar-context'
 import { ModalContextProvider } from './store/modal-context'
+import FourOhFour from "./pages/FourOhFour";
 
 function App() {
   const history = useHistory()
@@ -57,6 +58,7 @@ function App() {
             <ProtectedRoute path="/employee/:employeeId" exact component={Employee} isAuth={checkAuth} />
             <ProtectedRoute path="/employee/:employeeId/:taskId" exact component={Task} isAuth={checkAuth} />
             <ProtectedRoute path="/admin" component={Admin} isAuth={checkAuth} />
+            <Route path='*' component={FourOhFour} />
           </Switch>
         </ModalContextProvider>
       </NavbarContextProvider>
