@@ -29,6 +29,7 @@ export function NavbarContextProvider(props) {
   };
 
   function titleHandler(newTitle) {
+    document.title = newTitle + ' | Tm'
     setTitle(newTitle);
   }
 
