@@ -150,7 +150,7 @@ router.post("/relationship", verifyToken, isAdmin, async (req, res) => {
   // Check if relationship exsists
   let relationship;
   try {
-    relationship = await relationship.findOne({
+    relationship = await Relationship.findOne({
       employeeId: req.body.employeeId,
       employerId: req.body.employerId,
     });
@@ -159,7 +159,7 @@ router.post("/relationship", verifyToken, isAdmin, async (req, res) => {
     res.status(500).json({error: "Internal Server Error"});
   }
   // Creating new Relationship
-  const newRelationship = new relationship({
+  const newRelationship = new Relationship({
     employeeId: req.body.employeeId,
     employerId: req.body.employerId,
   });
