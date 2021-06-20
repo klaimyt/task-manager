@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 
+// Verify JWT token middleware
 module.exports = function(req, res, next) {
     const accessToken = req.cookies.access_token
     if (!accessToken) return res.status(401).json({error: "You have no auth token"})

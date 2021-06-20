@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
         // Check for password
         const result = await bcrypt.compare(req.body.password, user.password)
         if (!result) return res.status(400).json({ error: "Wrong username or password"})
-        // JWT Token
+        // Creating JWT Token
         const token = jwt.sign({_id: user.id, role: user.role}, process.env.JWT_SECRET)
         res.cookie('access_token', 'Bearer ' + token,  {httpOnly: true, sameSite: 'strict', expires: new Date(Date.now() + 24 * 3600000) })
         res.status(200).json({
@@ -34,6 +34,7 @@ router.post('/login', async (req, res) => {
     }
 })
 
+// Deleting http only cookie
 router.delete('/login', (req, res) => {
     res.clearCookie('access_token', {httpOnly: true, sameSite: 'strict'})
     res.send()

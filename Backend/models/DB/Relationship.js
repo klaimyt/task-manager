@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const userDataSchema = mongoose.Schema({
+const RelationshipSchema = mongoose.Schema({
     employerId: {
         type: String,
         ref: 'User'
@@ -19,6 +19,6 @@ const userDataSchema = mongoose.Schema({
     }
 })
 
-const UserData = mongoose.model('UserData', userDataSchema)
+const Relationship = mongoose.model('Relationship', RelationshipSchema)
 
-module.exports = UserData
+module.exports = Relationship

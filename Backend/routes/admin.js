@@ -11,7 +11,7 @@ const {
 const { isAdmin } = require("../permissions/authorization");
 // Data model
 const ROLE = require("../models/Role");
-const UserData = require("../models/DB/UserData");
+const Relationship = require("../models/DB/Relationship");
 const User = require("../models/DB/User");
 // functions
 const { deleteRelationship } = require("./functions");
@@ -24,7 +24,7 @@ router.get("/", verifyToken, isAdmin, async (req, res) => {
   res.status(200).json(query);
 });
 
-// Search for employer
+// Search for employer by name or username from request query.
 router.get("/search", verifyToken, isAdmin, (req, res) => {
   const query = req.query.q;
   const role = req.query.role;
@@ -54,17 +54,20 @@ router.get("/search", verifyToken, isAdmin, (req, res) => {
 
 // Create new user
 router.post("/createUser", verifyToken, isAdmin, async (req, res) => {
+  // Validating input data
   const { error } = registerValidation(req.body);
   if (!Object.values(ROLE).includes(req.body.role))
     return res.status(400).json({ error: "Bad Role" });
   if (error) return res.status(400).json({ error: error.details[0].message });
-  // If username exists
+  // Throw error if username already exists
   if (await User.findOne({ username: req.body.username }))
     return res.status(400).json({ error: "Username already exsists" });
 
+  // Encrypt password
   bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) return res.status(500).json({ error: err });
 
+  // Creating user object
     const newUser = new User({
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
@@ -73,6 +76,7 @@ router.post("/createUser", verifyToken, isAdmin, async (req, res) => {
       role: req.body.role,
     });
 
+  // Save user to db
     newUser
       .save()
       .then((result) => {
@@ -110,19 +114,23 @@ router.patch("/:userId/changePassword", verifyToken, isAdmin, (req, res) => {
 
 // Delete user
 router.delete("/:userId", verifyToken, isAdmin, (req, res) => {
-  UserData.find(
+  // Search user by id
+  Relationship.find(
     {
       $or: [
         { employeeId: req.params.userId },
         { employerId: req.params.userId },
       ],
     },
-    (err, userData) => {
+    (err, relationship) => {
       if (err) return res.status(500).send();
-      if (!userData) return res.status(404).send();
-      deleteRelationship(userData, res);
+      if (!relationship) return res.status(404).send();
+      // Deleting relationship. If you won't delete user, might happen memory leak (Losing of all pointers to exsisted object)
+      // Delete all Rel also deleting all tasks that user have because of the same reason.
+      deleteRelationship(relationship, res);
     }
   );
+  // Deleting user
   User.findByIdAndDelete(req.params.userId, (err, result) => {
     if (err) return res.status(404).json(err);
     res.json(result);
@@ -131,7 +139,7 @@ router.delete("/:userId", verifyToken, isAdmin, (req, res) => {
 
 // Get all relationships
 router.get("/relationship", verifyToken, isAdmin, (req, res) => {
-  UserData.find((err, relationships) => {
+  Relationship.find((err, relationships) => {
     if (err) return res.status(500).json(err);
     res.json(relationships);
   }).select("-__v");
@@ -139,22 +147,24 @@ router.get("/relationship", verifyToken, isAdmin, (req, res) => {
 
 // Create new relationship
 router.post("/relationship", verifyToken, isAdmin, async (req, res) => {
-  // Check if exsists
-  let userData;
+  // Check if relationship exsists
+  let relationship;
   try {
-    userData = await UserData.findOne({
+    relationship = await relationship.findOne({
       employeeId: req.body.employeeId,
       employerId: req.body.employerId,
     });
-    if (userData) return res.status(409).json({error: 'Relationship already exists'});
+    if (relationship) return res.status(409).json({error: 'Relationship already exists'});
   } catch (err) {
     res.status(500).json({error: "Internal Server Error"});
   }
-  const newRelationship = new UserData({
+  // Creating new Relationship
+  const newRelationship = new relationship({
     employeeId: req.body.employeeId,
     employerId: req.body.employerId,
   });
 
+  // Saving
   newRelationship
     .save()
     .then((result) => {

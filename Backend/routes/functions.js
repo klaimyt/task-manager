@@ -1,13 +1,13 @@
 const Task = require('../models/DB/Task')
-const UserData = require('../models/DB/UserData')
+const Relationship = require('../models/DB/Relationship')
 
 async function deleteRelationship(id, res) {
     try{
-        userData = await UserData.findById(id)
-        console.log(userData)
-        if (!userData) return res.status(404).send()
-        deleteAllTasksInsideRelationship(userData, res)
-        const result = userData.deleteOne()
+        relationship = await Relationship.findById(id)
+        if (!relationship) return res.status(404).send()
+        // Deleting all tasks inside relationship (They lose memory pointer, if won't be deleted)
+        deleteAllTasksInsideRelationship(relationship, res)
+        const result = relationship.deleteOne()
         if (!result) return res.status(404).send()
     } catch (err) {
         return false

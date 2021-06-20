@@ -6,15 +6,15 @@ const { canViewPage, canPatchTask } = require('../permissions/authorization')
 // Data model
 const STATE = require('../models/State')
 const ROLE = require('../models/Role')
-const UserData = require('../models/DB/UserData')
+const Relationship = require('../models/DB/Relationship')
 const Task = require('../models/DB/Task')
 
 const router = express.Router()
 
 // Get all employee's tasks
 router.get('/:userId', verifyToken, canViewPage, async (req, res) => {
-    const usersData = await UserData.find({employeeId: req.params.userId}).populate('tasks')
-    const tasks = usersData.filter(userData => userData.tasks.length > 0)
+    const relationships = await Relationship.find({employeeId: req.params.userId}).populate('tasks')
+    const tasks = relationships.filter(relationship => relationship.tasks.length > 0)
     res.send(tasks)
 })
 
@@ -36,10 +36,10 @@ router.post('/:userId', verifyToken, (req, res) => {
     if (!req.body.text) return res.status(400).send()
     // Only employer can create new task
     if (req.user.role === ROLE.EMPLOYEE && req.user.role === ROLE.ADMIN) return res.status(403).send()
-    // Query for user data
-    UserData.findOne({employeeId: req.params.userId, employerId: req.user._id}, (err, userData) => {
+    // Query for Relationship
+    Relationship.findOne({employeeId: req.params.userId, employerId: req.user._id}, (err, relationship) => {
         if (err) return res.status(404).send()
-        if (!userData) return res.status(404).send( )
+        if (!relationship) return res.status(404).send( )
         // Create new task
         const newTask = new Task({
             text: req.body.text,
@@ -47,8 +47,8 @@ router.post('/:userId', verifyToken, (req, res) => {
         })
         // Save new task
         newTask.save().then(() => {
-            userData.tasks.push(newTask)
-            userData.save().then().catch(err => res.status(500).json(err))
+            relationship.tasks.push(newTask)
+            relationship.save().then().catch(err => res.status(500).json(err))
         })
         res.send()
     })
@@ -56,9 +56,11 @@ router.post('/:userId', verifyToken, (req, res) => {
 
 // Change task state
 router.patch('/:userId/:taskId', verifyToken, canPatchTask, (req, res) => {
+    // Validating state
     const newState = req.body.state
     if (!Object.values(STATE).includes(newState)) return res.status(400).json({error: "Invalid state"})
     if (newState === STATE.FINISHED && req.user.role === ROLE.EMPLOYEE) return res.status(405).json({ error: "Employee can't set finished status"})
+    // Updating state
     Task.findByIdAndUpdate(req.params.taskId, { state: newState, updatedDate: Date.now() }, { useFindAndModify: false })
     .exec()
     .then(result => {
