@@ -7,6 +7,7 @@ import ModalContext from "../store/modal-context";
 import SortBox from "../components/ui/SortBox";
 import Select from "../components/ui/Select";
 import patchTask from "../api/patchTask";
+import Error from "../components/ui/Error";
 
 const Employee = () => {
   const navbarCtx = useContext(NavbarContext);
@@ -15,7 +16,7 @@ const Employee = () => {
   const [viewData, setViewData] = useState();
   const [error, setError] = useState();
   const [sortMethod, setSortMethod] = useState();
-  const [filter, setFilter] = useState('All');
+  const [filter, setFilter] = useState("All");
   const { employeeId } = useParams();
   const history = useHistory();
   const states = ["To do", "In progress", "Done", "Finished"];
@@ -52,7 +53,7 @@ const Employee = () => {
   }, [sortMethod]);
 
   useEffect(() => {
-    if (!dataBuffer) return
+    if (!dataBuffer) return;
     if (filter === "All") {
       setViewData(dataBuffer);
     } else {
@@ -72,7 +73,26 @@ const Employee = () => {
         }
       })
       .catch((err) => {
-        setError(err.response.data.error);
+        // TODO Error page
+        if (err.response.status === 404) {
+          setError(
+            <Error
+              emoji="😔"
+              title="404"
+              secondaryTitle="Oooops..."
+              text="The Relationship you are looking for does not exist. If you sure, that page address absolutly right, please contact to Admin."
+            />
+          );
+        } else {
+          setError(
+            <Error
+              emoji="😔"
+              title={err.response.status}
+              secondaryTitle="Oooops..."
+              text={`Something went wrong. Try to reload page or contact administrator. Error message: ${err.response.data.error}`}
+            />
+          )
+        }
       });
   }, [isOpen]);
 
@@ -147,9 +167,11 @@ const Employee = () => {
     );
   }
 
-  return (
+  return error ? (
+    error
+  ) : (
     <Dashboard
-      data={viewData || (error && [{ text: error, id: "err" }])}
+      data={viewData}
       action={cellClicked}
       secondaryAction={secondaryButtonClicked}
       right={
