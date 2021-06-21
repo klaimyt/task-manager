@@ -8,11 +8,13 @@ import SortBox from "../components/ui/SortBox";
 
 const Admin = () => {
   const navbarCtx = useContext(NavbarContext);
-  const [data, setData] = useState(null);
   const { isOpen } = useContext(ModalContext);
-  const history = useHistory();
+  const [data, setData] = useState(null);
+  // Take a sort function from SortBox component
   const [sortMethod, setSortMethod] = useState();
+  const history = useHistory();
 
+  // Setup navbar
   useEffect(() => {
     navbarCtx.setTitle("All Users");
     navbarCtx.setButtons({
@@ -22,6 +24,7 @@ const Admin = () => {
     });
   }, []);
 
+  //  Request data each time when modal close
   useEffect(() => {
     if (!isOpen) {
       requestAdminData().then((resData) => {
@@ -34,10 +37,12 @@ const Admin = () => {
     }
   }, [isOpen]);
 
+  // Sort data when sorting method changes
   useEffect(() => {
     if (data && sortMethod) sortMethod(setData);
   }, [sortMethod]);
 
+  // Handlers
   function cellClickedHandler(cell) {
     const userRole = cell.secondaryText.split(" ");
     switch (userRole[userRole.length - 1]) {
@@ -52,6 +57,7 @@ const Admin = () => {
     }
   }
 
+  // View Components
   function createRightComponent() {
     const sortItems = [
       { text: "Role", sortMethodName: "role" },

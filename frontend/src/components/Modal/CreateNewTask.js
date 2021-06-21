@@ -21,6 +21,7 @@ const CreateNewTask = () => {
     const currentPath = location.pathname
     const employeeId = currentPath.split('/')
 
+    // Send request to server  
     createTask(employeeId[employeeId.length - 1], taskText).then(() => 
       modalCtx.onClose()
     )

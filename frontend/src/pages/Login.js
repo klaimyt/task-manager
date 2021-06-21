@@ -7,6 +7,7 @@ import NavbarContext from "../store/navbar-context";
 import requestLogin from "../api/requestLogin";
 
 const Login = () => {
+  // Style
   const mainDivStyle = {
     display: "grid",
     placeItems: "center",
@@ -20,10 +21,12 @@ const Login = () => {
   const history = useHistory();
   const navbarCtx = useContext(NavbarContext);
 
+  // Setup navbar
   useEffect(() => {
     navbarCtx.setTitle("Tasks Manager");
   }, []);
 
+  // Handlers
   function submitHandler(event) {
     event.preventDefault();
     const username = usernameRef.current.value;
@@ -45,6 +48,7 @@ const Login = () => {
     return <Redirect to="/" />;
   }
 
+  // View components
   return (
     <div style={mainDivStyle}>
       <Card>

@@ -10,6 +10,7 @@ const CreateNewRelationship = () => {
   const modalCtx = useContext(ModalContext);
   const [error, setError] = useState();
   const [isSubmited, setIsSubmited] = useState(false);
+  // Buffer for data from searchComponent
   const [newRelationship, setNewRelationship] = useState({
     employerId: "",
     employeeId: "",
@@ -19,6 +20,7 @@ const CreateNewRelationship = () => {
     e.preventDefault();
     if (isSubmited) return;
 
+    // Send request to server
     createNewRelationship(newRelationship)
       .then(() => modalCtx.onClose())
       .catch((err) => {

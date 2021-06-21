@@ -22,7 +22,7 @@ function App() {
       return user ? true : false 
   }
 
-  // Check Authentication. (401 response) 
+  // Check for 401 response
   axios.interceptors.response.use(null, (e) => {
     if (e.response.status === 401) {
       localStorage.clear()
@@ -31,6 +31,7 @@ function App() {
     return Promise.reject(e);
   })
 
+  // Redirect when logged in user open default ('/') route
   function redirect() {
     const userId = localStorage.getItem('id')
     const role = localStorage.getItem('role')

@@ -13,12 +13,14 @@ const Task = () => {
   const navbarCtx = useContext(NavbarContext);
 
   useEffect(() => {
+    // Request data from server
     requsetTask(employeeId, taskId)
       .then((task) => {
         setData(task);
       })
       .catch((err) => setData(err));
 
+    // Setup Navbar
     navbarCtx.setTitle("Task");
     navbarCtx.setButtons({
       backButton: true,
@@ -26,6 +28,7 @@ const Task = () => {
     });
   }, []);
 
+  // View Components
   if (!data) {
     return (
       <Content>

@@ -35,6 +35,7 @@ const CreateNewUser = () => {
         password: passwordText,
         role: choosenRole,
       };
+      // Send request to server
       createNewUser(user)
         .then(() => modalCtx.onClose())
         .catch((err) => {

@@ -26,13 +26,13 @@ const ChangePassword = () => {
 
     if (newPasswordText === repeatPasswordText) {
       setIsSubmited(true);
+      // Send request to api
       changePassword(userId[userId.length - 1], newPasswordText)
         .then(() => modalCtx.onClose())
         .catch((err) => {
           setError("Ooops... Server error: " + err.response.data.error);
         });
     } else {
-      // TODO Error handler
       setError("Passwords not match");
     }
   }

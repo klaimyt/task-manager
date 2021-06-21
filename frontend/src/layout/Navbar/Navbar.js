@@ -25,18 +25,18 @@ const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
 
-  // Api req
+
   function handleLogout() {
+  // Api request to delete http only cookie
     axios
       .delete(`${config.API_URL}auth/login`, { withCredentials: true })
       .then(() => {
-        // TODO err handl
         localStorage.clear();
         history.push("/login");
       });
   }
 
-  // Handlers
+  // Animation Handlers
   function onMouseEnterHandler(e) {
     const elements = e.target.children;
     for (const element of elements) {
@@ -58,7 +58,7 @@ const Navbar = () => {
     }
   }
 
-  // Buttons
+  // Buttons Components
   function logoutButton() {
     if (buttons.logoutButton) {
       return (
@@ -170,7 +170,7 @@ const Navbar = () => {
     }
   }
 
-  // Component
+  // Navbar Component
   if (location.pathname === "/login") {
     return (
       <div className={classes["nav-bar"]}>

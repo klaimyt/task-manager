@@ -10,9 +10,11 @@ const Employer = () => {
   const { employerId } = useParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  // Take a sort function from SortBox component
   const [sortMethod, setSortMethod] = useState();
   const history = useHistory();
 
+  // Setup navbar
   useEffect(() => {
     const role = localStorage.getItem("role");
     navbarCtx.setTitle("Employees");
@@ -27,6 +29,7 @@ const Employer = () => {
     }
   }, []);
 
+  // Request data from server
   useEffect(() => {
     requestEmployerData(employerId)
       .then((employees) => {
@@ -37,16 +40,19 @@ const Employer = () => {
       });
   }, []);
 
+  // Sort data when sorting method changes
   useEffect(() => {
     if (data && sortMethod) sortMethod(setData);
   }, [sortMethod]);
 
+  // Handlers
   function clickHandler(cell) {
     // Will not click if cell has speciall id (0, err)
     if (cell.id === "0" || cell.id === "err") return;
     history.push(`/employee/${cell.id}`);
   }
 
+  // View Components
   function createSortBox() {
     const sortItems = [
       { text: "Name", sortMethodName: "alphabetical" },

@@ -12,9 +12,12 @@ import Error from "../components/ui/Error";
 const Employee = () => {
   const navbarCtx = useContext(NavbarContext);
   const { isOpen } = useContext(ModalContext);
+  // dataBuffer contains data from server response
   const [dataBuffer, setDataBuffer] = useState();
+  // viewData contains modified (e.g. filtered) data from dataBuffer
   const [viewData, setViewData] = useState();
   const [error, setError] = useState();
+  // Take a sort function from SortBox component
   const [sortMethod, setSortMethod] = useState();
   const [filter, setFilter] = useState("All");
   const { employeeId } = useParams();
@@ -22,6 +25,7 @@ const Employee = () => {
   const states = ["To do", "In progress", "Done", "Finished"];
   const role = localStorage.getItem("role");
 
+  // Setup navbar
   useEffect(() => {
     navbarCtx.setTitle("Tasks");
     switch (role) {
@@ -48,10 +52,12 @@ const Employee = () => {
     }
   }, []);
 
+  // Sort data when sorting method changes
   useEffect(() => {
     if (dataBuffer && sortMethod) sortMethod(setDataBuffer);
   }, [sortMethod]);
 
+  // Filter data when filter state or data itself changes
   useEffect(() => {
     if (!dataBuffer) return;
     if (filter === "All") {
@@ -61,6 +67,7 @@ const Employee = () => {
     }
   }, [dataBuffer, filter]);
 
+  //  Request data each time when modal close
   useEffect(() => {
     // Request new data on modal close
     if (isOpen) return;
@@ -73,7 +80,6 @@ const Employee = () => {
         }
       })
       .catch((err) => {
-        // TODO Error page
         if (err.response.status === 404) {
           setError(
             <Error
@@ -96,6 +102,7 @@ const Employee = () => {
       });
   }, [isOpen]);
 
+  // returns new state for task
   function getNextState(taskId) {
     const [task] = viewData.filter((task) => task.id === taskId);
     const currentStateIndex = states.indexOf(task.state);
@@ -110,6 +117,7 @@ const Employee = () => {
     return states[(currentStateIndex + 1) % 4];
   }
 
+  // Handlers
   function cellClicked(cell) {
     // Will not click if cell has speciall id (0, err)
     if (cell.id === "0" || cell.id === "err") return;
@@ -119,6 +127,7 @@ const Employee = () => {
   function secondaryButtonClicked(taskId) {
     const state = getNextState(taskId);
     if (!state) return;
+    // Send patch request to server
     patchTask(employeeId, taskId, state).then(() => {
       setViewData((prevData) => {
         return prevData.map((task) => {
@@ -129,7 +138,7 @@ const Employee = () => {
     });
   }
 
-  // Right components
+  // View Components
   function createSortBox() {
     const sortItems = [
       { text: "Creation Date", sortMethodName: "creationDate" },
